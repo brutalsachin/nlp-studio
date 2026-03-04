@@ -71,6 +71,12 @@ public class PreprocessingService {
             appliedSteps.add("LEMMATIZATION");
         }
 
+        int tokenCountBeforeDedup = tokens.size();
+        tokens = removeDuplicates(tokens);
+        if (tokens.size() < tokenCountBeforeDedup) {
+            appliedSteps.add("REMOVE_DUPLICATES");
+        }
+
         String processedText = String.join(" ", tokens).trim();
         return new PreprocessingResponse(original, processedText, tokens, appliedSteps);
     }
@@ -134,6 +140,20 @@ public class PreprocessingService {
             lemmatized.add(LEMMA_MAP.getOrDefault(normalized, normalized));
         }
         return lemmatized;
+    }
+
+    private List<String> removeDuplicates(List<String> tokens) {
+        if (tokens == null || tokens.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Set<String> unique = new LinkedHashSet<>();
+        for (String token : tokens) {
+            if (token != null && !token.isBlank()) {
+                unique.add(token);
+            }
+        }
+        return new ArrayList<>(unique);
     }
 
     private String safeRegexReplace(String input, String regex, String replacement) {

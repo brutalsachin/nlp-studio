@@ -60,4 +60,26 @@ class PreprocessingControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.status").value(400));
     }
+
+    @Test
+    void shouldRemoveDuplicateTokensDuringPreprocessing() throws Exception {
+        String requestBody = """
+            {
+              "text": "movie movie movie scene scene",
+              "normalization": "NONE",
+              "removeStopwords": false,
+              "lowercase": true,
+              "removePunctuation": false,
+              "removeNumbers": false
+            }
+            """;
+
+        mockMvc.perform(post("/api/preprocessing/preview")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.processedText").value("movie scene"))
+            .andExpect(jsonPath("$.tokens.length()").value(2))
+            .andExpect(jsonPath("$.appliedSteps[?(@ == 'REMOVE_DUPLICATES')]").isNotEmpty());
+    }
 }
