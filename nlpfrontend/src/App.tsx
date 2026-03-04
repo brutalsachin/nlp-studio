@@ -5,6 +5,7 @@ import UploadData from './UploadData';
 import Preprocessing from './preprocessing';
 import FeatureExtraction from './featureExtraction';
 import Vectorization from './vectorization';
+import NlpPipelineVisual from './nlpPipelineVisual';
 import ModelSelection from './modelSelection';
 import Evaluation from './evaluation';
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/preprocessing" element={<Preprocessing />} />
         <Route path="/feature-extraction" element={<FeatureExtraction />} />
         <Route path="/vectorization" element={<Vectorization />} />
+        <Route path="/pipeline-visual" element={<NlpPipelineVisual />} />
         <Route path="/model-selection" element={<ModelSelection />} />
         <Route path="/evaluation" element={<Evaluation />} />
       </Routes>

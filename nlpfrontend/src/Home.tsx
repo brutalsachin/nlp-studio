@@ -46,8 +46,8 @@ const Home = () => {
                         <h2 className="text-slate-100 text-xl font-bold tracking-tight ml-2 font-display group-hover:text-blue-400 transition-colors">NLP Lab</h2>
                     </div>
                     <nav className="hidden md:flex items-center gap-10">
-                        {['Home', 'Pipeline', 'Experiments', 'Analytics'].map((item) => (
-                            <a key={item} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors" href="#">{item}</a>
+                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }, { label: 'Experiments', path: '#' }, { label: 'Analytics', path: '#' }].map((item) => (
+                            <a key={item.label} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate(item.path)}>{item.label}</a>
                         ))}
                         <a className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate('/about')}>About</a>
                     </nav>
@@ -79,7 +79,7 @@ const Home = () => {
                             <button onClick={() => navigate('/upload')} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-blue-600 text-white text-base font-bold shadow-[0_0_20px_rgba(60,131,246,0.4)] hover:shadow-[0_0_30px_rgba(60,131,246,0.6)] transition-all">
                                 Start Experiment
                             </button>
-                            <button className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 border-2 border-slate-700 bg-transparent text-slate-100 text-base font-bold hover:bg-slate-800 transition-all">
+                            <button onClick={() => navigate('/pipeline-visual')} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 border-2 border-slate-700 bg-transparent text-slate-100 text-base font-bold hover:bg-slate-800 transition-all">
                                 Explore Demo
                             </button>
                             <button onClick={() => navigate('/upload')} className="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 border-2 border-indigo-500/50 bg-indigo-500/10 text-indigo-300 text-base font-bold hover:bg-indigo-500/20 transition-all shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)]">
