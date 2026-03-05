@@ -172,34 +172,18 @@ const Vectorization = () => {
         <div className="bg-[#07091a] text-slate-100 min-h-screen font-sans flex flex-col">
             {/* ────────── Header ────────── */}
             <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0d1f]/90 backdrop-blur-md px-6 lg:px-10 py-3.5">
-                <div className="max-w-[1440px] mx-auto flex items-center justify-between">
-                    <div
-                        className="flex items-center gap-3 cursor-pointer group"
-                        onClick={() => navigate('/')}
-                    >
-                        <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_0_18px_rgba(59,130,246,.45)] group-hover:shadow-[0_0_28px_rgba(59,130,246,.65)] transition-all">
-                            <span className="material-symbols-outlined text-white text-xl">
-                                account_tree
-                            </span>
-                        </div>
-                        <span className="text-base font-bold tracking-tight group-hover:text-blue-400 transition-colors">
-                            Interactive NLP Experimentation Platform
-                        </span>
+                <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+                    <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                        <span className="text-base font-bold tracking-tight group-hover:text-blue-400 transition-colors">NLP Lab</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 bg-slate-800/60 px-3 py-1.5 rounded-full border border-slate-700">
-                            <span className="relative flex h-2.5 w-2.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75" />
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500" />
-                            </span>
-                            <span className="text-[10px] font-bold text-blue-400 tracking-wider">
-                                VECTORIZATION ACTIVE
-                            </span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold">
-                            SY
-                        </div>
-                    </div>
+                    <nav className="hidden md:flex items-center gap-10">
+                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }].map((item) => (
+                            <a key={item.label} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate(item.path)}>{item.label}</a>
+                        ))}
+                        <a className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate('/about')}>About</a>
+                    </nav>
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold cursor-pointer hover:shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all" onClick={() => navigate('/about')}>SY</div>
                 </div>
             </header>
 

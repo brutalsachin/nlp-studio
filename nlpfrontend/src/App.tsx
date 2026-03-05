@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Home';
-import About from './about';
+import AboutMe from './aboutMe';
 import UploadData from './UploadData';
 import Preprocessing from './preprocessing';
 import FeatureExtraction from './featureExtraction';
@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<AboutMe />} />
         <Route path="/upload" element={<UploadData />} />
         <Route path="/preprocessing" element={<Preprocessing />} />
         <Route path="/feature-extraction" element={<FeatureExtraction />} />

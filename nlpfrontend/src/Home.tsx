@@ -42,11 +42,11 @@ const Home = () => {
             <header className="sticky top-0 z-50 w-full border-b border-slate-200/10 bg-[#0F172A]/80 backdrop-blur-md px-6 md:px-20 py-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 text-blue-500 cursor-pointer group" onClick={() => navigate('/')}>
-                        <span className="material-symbols-outlined text-3xl font-bold group-hover:drop-shadow-[0_0_8px_rgba(96,165,250,0.8)] transition-all">account_tree</span>
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
                         <h2 className="text-slate-100 text-xl font-bold tracking-tight ml-2 font-display group-hover:text-blue-400 transition-colors">NLP Lab</h2>
                     </div>
                     <nav className="hidden md:flex items-center gap-10">
-                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }, { label: 'Experiments', path: '#' }, { label: 'Analytics', path: '#' }].map((item) => (
+                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }].map((item) => (
                             <a key={item.label} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate(item.path)}>{item.label}</a>
                         ))}
                         <a className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate('/about')}>About</a>
@@ -55,7 +55,7 @@ const Home = () => {
                         <button onClick={() => navigate('/upload')} className="flex items-center justify-center rounded-lg h-10 px-6 bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-600/20 hover:bg-blue-600/90 transition-all">
                             Launch Experiment
                         </button>
-                        <div className="bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-700">
+                        <div className="bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-700 cursor-pointer hover:border-blue-500/50 transition-colors" onClick={() => navigate('/about')}>
                             <span className="material-symbols-outlined text-slate-400">person</span>
                         </div>
                     </div>
@@ -319,7 +319,7 @@ const Home = () => {
             <footer className="px-6 md:px-20 py-16 border-t border-slate-800 bg-[#020617] text-slate-500">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
                     <div className="flex items-center gap-3 text-slate-100">
-                        <span className="material-symbols-outlined text-blue-500">account_tree</span>
+                        <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
                         <span className="font-bold text-lg tracking-tight">NLP Lab</span>
                     </div>
                     <div className="flex flex-wrap justify-center gap-10 text-sm font-medium">

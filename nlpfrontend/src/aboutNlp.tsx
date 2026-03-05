@@ -9,16 +9,12 @@ const About = () => {
             <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-[#0F172A]/80 backdrop-blur-md px-6 lg:px-20 py-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
-                            <span className="material-symbols-outlined">account_tree</span>
-                        </div>
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
                         <h1 className="text-xl font-bold tracking-tight text-slate-100">NLP Lab</h1>
                     </div>
                     <nav className="hidden md:flex items-center gap-8">
                         <a className="text-sm font-medium text-slate-400 hover:text-blue-500 transition-colors cursor-pointer" onClick={() => navigate('/')}>Home</a>
                         <a className="text-sm font-medium text-slate-400 hover:text-blue-500 transition-colors" href="#">Pipeline</a>
-                        <a className="text-sm font-medium text-slate-400 hover:text-blue-500 transition-colors" href="#">Experiments</a>
-                        <a className="text-sm font-medium text-slate-400 hover:text-blue-500 transition-colors" href="#">Analytics</a>
                         <a className="text-sm font-medium text-blue-500 cursor-pointer">About</a>
                     </nav>
                     <div className="flex items-center gap-4">
@@ -179,7 +175,7 @@ const About = () => {
             <footer className="w-full border-t border-slate-800 py-12 px-6 lg:px-20 bg-[#020617]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-                        <span className="material-symbols-outlined text-blue-500">account_tree</span>
+                        <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
                         <span className="font-bold text-lg tracking-tight">NLP Lab</span>
                     </div>
                     <div className="flex flex-wrap justify-center gap-10 text-sm font-medium text-slate-500">

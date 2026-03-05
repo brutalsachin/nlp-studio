@@ -29,7 +29,7 @@ const NlpPipelineVisual = () => {
             {/* ── Fixed Header ── */}
             <header className="fixed top-0 left-0 w-full h-20 z-50 flex items-center justify-between px-8 bg-[#020617]/80 backdrop-blur-xl border-b border-slate-800/50">
                 <div className="flex items-center gap-2 text-indigo-500 cursor-pointer" onClick={() => navigate('/')}>
-                    <span className="material-symbols-outlined text-3xl font-bold">hub</span>
+                    <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
                     <h1 className="text-xl font-extrabold tracking-tighter uppercase italic">NLP Journey</h1>
                 </div>
                 <nav className="hidden md:flex gap-8 items-center">
@@ -438,7 +438,7 @@ const NlpPipelineVisual = () => {
             <footer className="py-20 border-t border-slate-900 text-center">
                 <div className="max-w-4xl mx-auto px-6 space-y-8">
                     <div className="flex items-center justify-center gap-2 text-indigo-500/50 cursor-pointer" onClick={() => navigate('/')}>
-                        <span className="material-symbols-outlined text-2xl">hub</span>
+                        <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
                         <h1 className="text-lg font-extrabold tracking-tighter uppercase italic">NLP Journey</h1>
                     </div>
                     <p className="text-slate-500 text-sm max-w-md mx-auto">

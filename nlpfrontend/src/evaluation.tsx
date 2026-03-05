@@ -16,19 +16,16 @@ const Evaluation = () => {
             <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0d1f]/90 backdrop-blur-md px-6 lg:px-10 py-3.5">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-                        <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(60,131,246,0.4)] transition-all">
-                            <span className="material-symbols-outlined text-white text-xl">psychology</span>
-                        </div>
-                        <span className="text-base font-bold tracking-tight group-hover:text-blue-400 transition-colors">NLP Studio</span>
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                        <span className="text-base font-bold tracking-tight group-hover:text-blue-400 transition-colors">NLP Lab</span>
                     </div>
-                    <div className="flex items-center gap-6">
-                        <nav className="hidden md:flex items-center gap-6">
-                            <a className="text-sm font-medium hover:text-blue-400 transition-colors cursor-pointer" onClick={() => navigate('/')}>Dashboard</a>
-                            <a className="text-sm font-medium text-blue-400 cursor-pointer">Experiments</a>
-                        </nav>
-                        <div className="h-8 w-[1px] bg-slate-800 mx-2"></div>
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold">SY</div>
-                    </div>
+                    <nav className="hidden md:flex items-center gap-10">
+                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }].map((item) => (
+                            <a key={item.label} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate(item.path)}>{item.label}</a>
+                        ))}
+                        <a className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate('/about')}>About</a>
+                    </nav>
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold cursor-pointer hover:shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all" onClick={() => navigate('/about')}>SY</div>
                 </div>
             </header>
 
