@@ -1,13 +1,13 @@
-package com.example.nplbackend.model.dto;
+package com.example.nplbackend.dto;
 
-public class SentimentResponse {
+public class ModelPredictionResponse {
     private String prediction;
     private double confidence;
 
-    public SentimentResponse() {
+    public ModelPredictionResponse() {
     }
 
-    public SentimentResponse(String prediction, double confidence) {
+    public ModelPredictionResponse(String prediction, double confidence) {
         this.prediction = prediction;
         this.confidence = confidence;
     }

@@ -60,12 +60,7 @@ public class DatasetService {
                 }
             }
 
-            return DatasetUploadResponse.builder()
-                .columns(columns)
-                .rowCount(rowCount)
-                .preview(preview)
-                .labelDistribution(labelDistribution)
-                .build();
+            return new DatasetUploadResponse(columns, rowCount, preview, labelDistribution);
         } catch (IOException e) {
             throw new DatasetParseException("Failed to parse CSV file", e);
         } catch (RuntimeException e) {

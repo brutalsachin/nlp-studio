@@ -6,7 +6,6 @@ import com.example.nplbackend.model.dto.SentimentResponse;
 import com.example.nplbackend.service.LandingPageService;
 import com.example.nplbackend.service.SentimentService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class LandingPageController {
     private final LandingPageService landingPageService;
     private final SentimentService sentimentService;
+
+    public LandingPageController(LandingPageService landingPageService, SentimentService sentimentService) {
+        this.landingPageService = landingPageService;
+        this.sentimentService = sentimentService;
+    }
 
     @GetMapping("/landing-page")
     public LandingPageResponse getLandingPage() {

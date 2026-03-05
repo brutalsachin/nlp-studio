@@ -49,20 +49,14 @@ public class AnalyzeService {
         double confidence = resolveConfidence(positiveHits, negativeHits, tokens.size());
         List<String> keyDrivers = resolveKeyDrivers(tokenFrequency, positiveHits, negativeHits);
 
-        AnalyzeResponse.PipelineDetails pipeline = AnalyzeResponse.PipelineDetails.builder()
-            .tokens(tokens)
-            .ngrams(ngrams)
-            .vectorSize(tokens.size() + ngrams.size())
-            .modelUsed("Naive Bayes")
-            .build();
+        AnalyzeResponse.PipelineDetails pipeline = new AnalyzeResponse.PipelineDetails(
+            tokens,
+            ngrams,
+            tokens.size() + ngrams.size(),
+            "Naive Bayes"
+        );
 
-        return AnalyzeResponse.builder()
-            .input(input)
-            .prediction(prediction)
-            .confidence(confidence)
-            .keyDrivers(keyDrivers)
-            .pipeline(pipeline)
-            .build();
+        return new AnalyzeResponse(input, prediction, confidence, keyDrivers, pipeline);
     }
 
     private List<String> tokenize(String text) {

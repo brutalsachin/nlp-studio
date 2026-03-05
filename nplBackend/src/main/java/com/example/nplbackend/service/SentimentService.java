@@ -30,10 +30,7 @@ public class SentimentService {
 
         double confidence = calculateConfidence(positiveCount, negativeCount, prediction);
 
-        return SentimentResponse.builder()
-            .prediction(prediction)
-            .confidence(confidence)
-            .build();
+        return new SentimentResponse(prediction, confidence);
     }
 
     private int countMatches(String text, Set<String> lexicon) {

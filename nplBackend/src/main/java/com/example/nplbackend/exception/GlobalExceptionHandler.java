@@ -39,6 +39,8 @@ public class GlobalExceptionHandler {
         AnalysisException.class,
         DatasetBadRequestException.class,
         FeatureExtractionBadRequestException.class,
+        ModelBadRequestException.class,
+        ModelNotTrainedException.class,
         PreprocessingBadRequestException.class,
         VectorizationBadRequestException.class,
         MissingServletRequestParameterException.class,
@@ -65,11 +67,16 @@ public class GlobalExceptionHandler {
         } else if (cause != null && cause.getMessage() != null
             && cause.getMessage().contains("Invalid vectorizationType")) {
             message = cause.getMessage();
+        } else if (cause != null && cause.getMessage() != null
+            && cause.getMessage().contains("Invalid modelType")) {
+            message = cause.getMessage();
         } else if (ex.getMessage() != null && ex.getMessage().contains("Invalid normalization")) {
             message = ex.getMessage();
         } else if (ex.getMessage() != null && ex.getMessage().contains("Invalid ngramType")) {
             message = ex.getMessage();
         } else if (ex.getMessage() != null && ex.getMessage().contains("Invalid vectorizationType")) {
+            message = ex.getMessage();
+        } else if (ex.getMessage() != null && ex.getMessage().contains("Invalid modelType")) {
             message = ex.getMessage();
         }
         return buildError(HttpStatus.BAD_REQUEST, message, request.getRequestURI());
@@ -98,13 +105,13 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ApiErrorResponse> buildError(HttpStatus status, String message, String path) {
-        ApiErrorResponse body = ApiErrorResponse.builder()
-            .timestamp(Instant.now())
-            .status(status.value())
-            .error(status.getReasonPhrase())
-            .message(message)
-            .path(path)
-            .build();
+        ApiErrorResponse body = new ApiErrorResponse(
+            Instant.now(),
+            status.value(),
+            status.getReasonPhrase(),
+            message,
+            path
+        );
         return ResponseEntity.status(status).body(body);
     }
 }
