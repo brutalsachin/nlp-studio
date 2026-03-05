@@ -1,7 +1,28 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { analyzeText, type AnalyzeResponse } from './api/nlpApi';
 
 const NlpPipelineVisual = () => {
     const navigate = useNavigate();
+    const [showTryIt, setShowTryIt] = useState(false);
+    const [customText, setCustomText] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState<AnalyzeResponse | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    const handlePredict = async () => {
+        if (!customText.trim()) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await analyzeText({ text: customText.trim() });
+            setResult(res);
+        } catch (e: any) {
+            setError(e.message || 'Prediction failed');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="bg-[#020617] text-slate-100 min-h-screen selection:bg-indigo-500/30" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -271,32 +292,147 @@ const NlpPipelineVisual = () => {
                         </div>
                         <div className="space-y-8 relative z-10">
                             <div className="bg-black/40 p-6 rounded-2xl border border-white/5">
-                                <p className="text-3xl font-bold text-white">"This movie was amazing"</p>
+                                <p className="text-3xl font-bold text-white">
+                                    "{result ? result.input : 'This movie was amazing'}"
+                                </p>
                             </div>
                             <div className="flex flex-col md:flex-row items-center justify-center gap-12">
                                 <div className="text-center">
                                     <p className="text-[10px] font-black uppercase text-slate-400 mb-2">Sentiment</p>
-                                    <p className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-rose-500">Positive</p>
+                                    <p className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-rose-500">
+                                        {result ? result.prediction : 'Positive'}
+                                    </p>
                                 </div>
                                 <div className="w-px h-16 bg-slate-800 hidden md:block" />
                                 <div className="text-center">
                                     <p className="text-[10px] font-black uppercase text-slate-400 mb-2">Confidence</p>
-                                    <p className="text-5xl font-black text-white">92%</p>
+                                    <p className="text-5xl font-black text-white">
+                                        {result ? `${Math.round(result.confidence * 100)}%` : '92%'}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-wrap justify-center gap-4">
                         <button
-                            onClick={() => navigate('/upload')}
+                            onClick={() => setShowTryIt(!showTryIt)}
                             className="px-10 py-5 bg-indigo-500 text-white font-black rounded-full shadow-2xl shadow-indigo-500/20 hover:-translate-y-1 transition-all flex items-center gap-3"
                         >
                             <span className="material-symbols-outlined">rocket_launch</span>
-                            Run Custom Test
+                            {showTryIt ? 'Close Panel' : 'Run Custom Test'}
                         </button>
                     </div>
+
+                    {/* ─── TRY IT NOW PANEL ─── */}
+                    {showTryIt && (
+                        <div className="w-full text-left space-y-6 animate-[fadeSlideIn_0.4s_ease-out]">
+                            <div>
+                                <h3 className="text-4xl font-black text-white">Try It Now</h3>
+                                <p className="text-slate-400 mt-2">See the pipeline in action with real-time analysis</p>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* INPUT SIDE */}
+                                <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-8 space-y-6">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400">Input Text</p>
+                                    <textarea
+                                        value={customText}
+                                        onChange={(e) => setCustomText(e.target.value)}
+                                        placeholder="Type or paste your text here... e.g. I absolutely love this product!"
+                                        className="w-full h-40 bg-[#0a0f1e] border border-indigo-500/30 rounded-2xl p-5 text-slate-200 placeholder-slate-500 text-sm resize-y focus:outline-none focus:border-indigo-500 transition-colors"
+                                    />
+                                    <button
+                                        onClick={handlePredict}
+                                        disabled={loading || !customText.trim()}
+                                        className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:cursor-not-allowed text-white font-black rounded-2xl transition-all flex items-center justify-center gap-3 text-sm"
+                                    >
+                                        {loading ? (
+                                            <>
+                                                <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                                                Analyzing...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span className="material-symbols-outlined">bolt</span>
+                                                Predict
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+
+                                {/* OUTPUT SIDE */}
+                                <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-8">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-6">Output Analysis</p>
+                                    {error && (
+                                        <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-5 text-red-400 text-sm">
+                                            <span className="material-symbols-outlined align-middle mr-2 text-lg">error</span>
+                                            {error}
+                                        </div>
+                                    )}
+                                    {!result && !error && (
+                                        <div className="flex flex-col items-center justify-center h-48 text-slate-500">
+                                            <span className="material-symbols-outlined text-5xl mb-4 opacity-40">manage_search</span>
+                                            <p className="text-sm">Results will appear here after prediction</p>
+                                        </div>
+                                    )}
+                                    {result && !error && (
+                                        <div className="space-y-6 animate-[fadeSlideIn_0.3s_ease-out]">
+                                            <div className="flex items-center gap-6">
+                                                <div className="flex-1">
+                                                    <p className="text-[10px] font-bold uppercase text-slate-500 mb-1">Sentiment</p>
+                                                    <p className={`text-3xl font-black ${result.prediction === 'Positive' ? 'text-green-400' : result.prediction === 'Negative' ? 'text-red-400' : 'text-yellow-400'}`}>
+                                                        {result.prediction}
+                                                    </p>
+                                                </div>
+                                                <div className="flex-1 text-right">
+                                                    <p className="text-[10px] font-bold uppercase text-slate-500 mb-1">Confidence</p>
+                                                    <p className="text-3xl font-black text-white">{Math.round(result.confidence * 100)}%</p>
+                                                </div>
+                                            </div>
+                                            <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full transition-all duration-700 ${result.prediction === 'Positive' ? 'bg-green-500' : result.prediction === 'Negative' ? 'bg-red-500' : 'bg-yellow-500'}`}
+                                                    style={{ width: `${Math.round(result.confidence * 100)}%` }}
+                                                />
+                                            </div>
+                                            {result.keyDrivers && result.keyDrivers.length > 0 && (
+                                                <div>
+                                                    <p className="text-[10px] font-bold uppercase text-slate-500 mb-2">Key Drivers</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {result.keyDrivers.map((d, i) => (
+                                                            <span key={i} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-xs font-bold border border-indigo-500/20">{d}</span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {result.pipeline && (
+                                                <div className="grid grid-cols-2 gap-3 pt-2">
+                                                    <div className="bg-slate-900/60 rounded-xl p-3 text-center">
+                                                        <p className="text-lg font-black text-indigo-400">{result.pipeline.tokens?.length ?? '—'}</p>
+                                                        <p className="text-[9px] uppercase font-bold text-slate-500">Tokens</p>
+                                                    </div>
+                                                    <div className="bg-slate-900/60 rounded-xl p-3 text-center">
+                                                        <p className="text-lg font-black text-indigo-400">{result.pipeline.vectorSize ?? '—'}</p>
+                                                        <p className="text-[9px] uppercase font-bold text-slate-500">Vector Size</p>
+                                                    </div>
+                                                    <div className="bg-slate-900/60 rounded-xl p-3 text-center">
+                                                        <p className="text-lg font-black text-indigo-400">{result.pipeline.ngrams?.length ?? '—'}</p>
+                                                        <p className="text-[9px] uppercase font-bold text-slate-500">N-grams</p>
+                                                    </div>
+                                                    <div className="bg-slate-900/60 rounded-xl p-3 text-center">
+                                                        <p className="text-lg font-black text-indigo-400">{result.pipeline.modelUsed ?? '—'}</p>
+                                                        <p className="text-[9px] uppercase font-bold text-slate-500">Model</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </section>
+
 
             {/* ── Footer ── */}
             <footer className="py-20 border-t border-slate-900 text-center">
@@ -324,6 +460,10 @@ const NlpPipelineVisual = () => {
                     0% { transform: translateY(0px); }
                     50% { transform: translateY(-20px); }
                     100% { transform: translateY(0px); }
+                }
+                @keyframes fadeSlideIn {
+                    0% { opacity: 0; transform: translateY(24px); }
+                    100% { opacity: 1; transform: translateY(0); }
                 }
             `}</style>
         </div>
