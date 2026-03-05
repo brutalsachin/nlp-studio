@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { uploadDataset } from './api/nlpApi';
 import type { DatasetUploadResponse } from './api/nlpApi';
@@ -89,6 +89,16 @@ const UploadData = () => {
 
     const testSplit = 100 - trainSplit;
 
+    useEffect(() => {
+        if (isCustomUpload) {
+            return;
+        }
+        const texts = selectedDataset.preview.map((row) => row.text);
+        const labels = selectedDataset.preview.map((row) => row.label);
+        localStorage.setItem('trainingTexts', JSON.stringify(texts));
+        localStorage.setItem('trainingLabels', JSON.stringify(labels));
+    }, [isCustomUpload, selectedDataset]);
+
     const handleSelectDataset = (ds: typeof sampleDatasets[0]) => {
         setSelectedDataset(ds);
         setIsCustomUpload(false);
@@ -97,6 +107,12 @@ const UploadData = () => {
         setError(null);
         setTextCol(ds.textCol);
         setLabelCol(ds.labelCol);
+        // Persist sample rows for training later
+        const texts = ds.preview.map(row => row.text);
+        const labels = ds.preview.map(row => row.label);
+        localStorage.setItem('trainingTexts', JSON.stringify(texts));
+        localStorage.setItem('trainingLabels', JSON.stringify(labels));
+        localStorage.setItem('uploadedDatasetAvailable', 'false');
     };
 
     const processFile = async (file: File) => {
@@ -108,9 +124,30 @@ const UploadData = () => {
         try {
             const result = await uploadDataset(file);
             setDatasetInfo(result);
-            if (result.columns.length > 0) setTextCol(result.columns[0]);
-            if (result.columns.length > 1) setLabelCol(result.columns[1]);
+            if (result.columns.length > 0) {
+                const detectedTextColumn = result.columns.find((col) =>
+                    /text|review|content|body|tweet|sentence|comment/i.test(col)
+                ) ?? result.columns[0];
+                const detectedLabelColumn = result.columns.find((col) =>
+                    /^(label|sentiment|target|class|y)$/i.test(col.trim())
+                ) ?? result.columns[result.columns.length - 1];
+
+                setTextCol(detectedTextColumn);
+                setLabelCol(detectedLabelColumn);
+
+                const texts = result.preview
+                    .map((row) => String(row[detectedTextColumn] ?? '').trim())
+                    .filter(Boolean);
+                const labels = result.preview
+                    .map((row) => String(row[detectedLabelColumn] ?? '').trim())
+                    .filter(Boolean);
+
+                localStorage.setItem('trainingTexts', JSON.stringify(texts));
+                localStorage.setItem('trainingLabels', JSON.stringify(labels));
+                localStorage.setItem('uploadedDatasetAvailable', 'true');
+            }
         } catch (err: unknown) {
+            localStorage.setItem('uploadedDatasetAvailable', 'false');
             setError(err instanceof Error ? err.message : 'Upload failed. Please try again.');
         } finally {
             setLoading(false);

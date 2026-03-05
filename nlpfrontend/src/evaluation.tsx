@@ -260,19 +260,10 @@ const Evaluation = () => {
                 </div>
             </main>
 
-            <footer className="sticky bottom-0 z-50 flex flex-col sm:flex-row items-center justify-between gap-6 px-6 lg:px-10 py-5 bg-[#0a0d1f]/90 backdrop-blur-md border-t border-slate-800">
+            <footer className="sticky bottom-0 z-50 flex items-center justify-between px-6 lg:px-10 py-5 bg-[#0a0d1f]/90 backdrop-blur-md border-t border-slate-800">
                 <button onClick={() => navigate('/model-selection')} className="flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-slate-400 hover:text-white transition-all group">
                     <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>Back Selection
                 </button>
-                <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all border border-slate-700">
-                        <span className="material-symbols-outlined text-lg">download</span>Export
-                    </button>
-                    <button onClick={() => navigate('/')} className="flex-2 sm:flex-none flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold bg-blue-600 text-white shadow-[0_0_20px_rgba(60,131,246,0.4)] hover:shadow-[0_0_30px_rgba(60,131,246,0.6)] hover:bg-blue-500 transition-all border border-blue-400/30">
-                        Finish & Deploy Model
-                        <span className="material-symbols-outlined text-lg">rocket_launch</span>
-                    </button>
-                </div>
             </footer>
         </div>
     );

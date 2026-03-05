@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { trainModel, type ModelType, type TrainResponse } from './api/modelApi';
+import { previewVectorization, type NgramType, type VectorizationType } from './api/vectorizationApi';
 
 const PIPELINE = [
     { label: 'Upload Dataset', icon: 'upload_file', done: true, active: false, path: '/upload' },
@@ -10,11 +11,9 @@ const PIPELINE = [
     { label: 'Model Selection', icon: 'model_training', done: false, active: true, path: '/model-selection' },
 ];
 
-const DEFAULT_METRICS = { accuracy: '—', f1: '—', precision: '—', recall: '—', precPct: 0, recPct: 0, f1Pct: 0 };
-
 const ModelSelection = () => {
     const navigate = useNavigate();
-    const [model, setModel] = useState<ModelType>('naive_bayes');
+    const [model, setModel] = useState<ModelType>('NAIVE_BAYES');
     const [isTraining, setIsTraining] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [trainedMetrics, setTrainedMetrics] = useState<TrainResponse | null>(null);
@@ -30,7 +29,7 @@ const ModelSelection = () => {
             recPct: Math.round(trainedMetrics.recall * 100),
             f1Pct: Math.round(trainedMetrics.f1Score * 100),
         }
-        : model === 'naive_bayes'
+        : model === 'NAIVE_BAYES'
             ? { accuracy: '~87%', f1: '~0.86', precision: '~0.89', recall: '~0.84', precPct: 89, recPct: 84, f1Pct: 86 }
             : { accuracy: '~91%', f1: '~0.90', precision: '~0.92', recall: '~0.88', precPct: 92, recPct: 88, f1Pct: 90 };
 
@@ -45,17 +44,75 @@ const ModelSelection = () => {
         setError(null);
 
         try {
-            // Gather pipeline state from localStorage
-            const features = JSON.parse(localStorage.getItem('selectedFeatures') || '[]');
-            const ngramType = localStorage.getItem('ngramType') || 'UNIGRAM';
-            const vectorizationType = localStorage.getItem('vectorizationType') || 'TF_IDF';
+            // 1. Gather pipeline state from localStorage
+            const selectedFeatures: string[] = JSON.parse(localStorage.getItem('selectedFeatures') || '[]');
+            const ngramType = (localStorage.getItem('ngramType') as NgramType) || 'UNIGRAM';
+            const vectorizationType = (localStorage.getItem('vectorizationType') as VectorizationType) || 'TF_IDF';
+            const uploadedDatasetAvailable = localStorage.getItem('uploadedDatasetAvailable') === 'true';
+            let texts: string[] = JSON.parse(localStorage.getItem('trainingTexts') || '[]');
+            let labels: string[] = JSON.parse(localStorage.getItem('trainingLabels') || '[]');
 
+            // 2. Validation and Alignment
+            if (selectedFeatures.length === 0) {
+                throw new Error('Missing selected features. Please complete Feature Extraction and Vectorization first.');
+            }
+            if (!uploadedDatasetAvailable) {
+                if (texts.length === 0 || labels.length === 0) {
+                    throw new Error('Missing training data. Please upload/select dataset again.');
+                }
+                if (texts.length !== labels.length) {
+                    const minLen = Math.min(texts.length, labels.length);
+                    console.warn(`Data length mismatch: texts(${texts.length}) vs labels(${labels.length}). Aligning to ${minLen}.`);
+                    texts = texts.slice(0, minLen);
+                    labels = labels.slice(0, minLen);
+                }
+                if (new Set(labels).size < 2) {
+                    throw new Error('Training requires at least 2 distinct labels. Please upload/select a balanced dataset.');
+                }
+            }
+
+            // 3. Build feature matrix on frontend for sample datasets.
+            // For uploaded CSVs, backend trains directly from the uploaded dataset.
+            let features: number[][] = [];
+            if (!uploadedDatasetAvailable) {
+                features = await Promise.all(
+                    texts.map(async (text) => {
+                        const vectorized = await previewVectorization({
+                            text,
+                            ngramType,
+                            vectorizationType,
+                            selectedFeatures,
+                        });
+                        return vectorized.vector.map((value) => Number(value) || 0);
+                    })
+                );
+                localStorage.setItem('trainingFeatures', JSON.stringify(features));
+            }
+
+            // 4. Debug Logging
+            console.log("🚀 Training Payload Shape:", {
+                modelType: model,
+                rowCount: uploadedDatasetAvailable ? 'backend-uploaded-dataset' : features.length,
+                featureVectorSize: features[0]?.length || 0,
+                labelCount: uploadedDatasetAvailable ? 'backend-uploaded-dataset' : labels.length,
+                useUploadedDataset: uploadedDatasetAvailable,
+                ngramType,
+                vectorizationType
+            });
+
+            // 5. API Call
+            const payloadLabels = uploadedDatasetAvailable ? [] : labels;
             const result = await trainModel({
                 modelType: model,
                 features,
-                labels: [], // Backend will use the uploaded dataset labels
+                labels: payloadLabels,
+                selectedFeatures,
                 ngramType,
                 vectorizationType,
+                // Additional settings if available
+                lowercase: true,
+                removeStopwords: true,
+                removePunctuation: true
             });
 
             setTrainedMetrics(result);
@@ -127,8 +184,8 @@ const ModelSelection = () => {
                     <div className="space-y-6">
                         <div className="grid md:grid-cols-2 gap-4">
                             {[
-                                { id: 'naive_bayes' as ModelType, icon: 'function', title: 'Naive Bayes', desc: 'Probabilistic classifier based on Bayes\' Theorem. Fast and efficient for text with high-dimensional data.' },
-                                { id: 'logistic' as ModelType, icon: 'show_chart', title: 'Logistic Regression', desc: 'Predicts probabilities for binary or multi-class classification with strong linear relationships.' },
+                                { id: 'NAIVE_BAYES' as ModelType, icon: 'function', title: 'Naive Bayes', desc: 'Probabilistic classifier based on Bayes\' Theorem. Fast and efficient for text with high-dimensional data.' },
+                                { id: 'LOGISTIC_REGRESSION' as ModelType, icon: 'show_chart', title: 'Logistic Regression', desc: 'Predicts probabilities for binary or multi-class classification with strong linear relationships.' },
                             ].map(m => {
                                 const active = model === m.id;
                                 return (
@@ -201,8 +258,8 @@ const ModelSelection = () => {
                             onClick={handleTrain}
                             disabled={isTraining}
                             className={`px-8 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all ${isTraining
-                                    ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                                    : 'bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_18px_rgba(60,131,246,0.4)]'
+                                ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                                : 'bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_18px_rgba(60,131,246,0.4)]'
                                 }`}
                         >
                             {isTraining ? (

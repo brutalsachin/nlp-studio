@@ -4,14 +4,20 @@
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-export type ModelType = "naive_bayes" | "logistic";
+export type ModelType = "NAIVE_BAYES" | "LOGISTIC_REGRESSION";
 
 export interface TrainRequest {
     modelType: ModelType;
-    features: string[];
-    labels: string[];
+    features: number[][]; // Full feature matrix
+    labels: string[];     // Labels for each row in the matrix
+    selectedFeatures?: string[];
     ngramType?: string;
     vectorizationType?: string;
+    normalization?: string;
+    removeStopwords?: boolean;
+    lowercase?: boolean;
+    removePunctuation?: boolean;
+    removeNumbers?: boolean;
 }
 
 export interface TrainResponse {

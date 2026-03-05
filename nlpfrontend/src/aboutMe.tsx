@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-
+import sachinImage from "./assets/sachin_image.jpeg";
 const AboutMe = () => {
     const navigate = useNavigate();
 
@@ -13,6 +13,30 @@ const AboutMe = () => {
                     backgroundSize: '24px 24px',
                 }}
             />
+
+            {/* Top Navigation */}
+            <header className="sticky top-0 z-50 w-full border-b border-slate-200/10 bg-[#0a0c10]/80 backdrop-blur-md px-6 md:px-20 py-4">
+                <div className="max-w-7xl mx-auto flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-blue-500 cursor-pointer group" onClick={() => navigate('/')}>
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                        <h2 className="text-slate-100 text-xl font-bold tracking-tight ml-2 font-display group-hover:text-blue-400 transition-colors">NLP Lab</h2>
+                    </div>
+                    <nav className="hidden md:flex items-center gap-10">
+                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }].map((item) => (
+                            <a key={item.label} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate(item.path)}>{item.label}</a>
+                        ))}
+                        <a className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate('/about')}>About</a>
+                    </nav>
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => navigate('/upload')} className="flex items-center justify-center rounded-lg h-10 px-6 bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-600/20 hover:bg-blue-600/90 transition-all">
+                            Launch Experiment
+                        </button>
+                        <div className="bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-700 cursor-pointer hover:border-blue-500/50 transition-colors" onClick={() => navigate('/about')}>
+                            <span className="material-symbols-outlined text-slate-400">person</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
             <main className="min-h-screen p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto">
                 {/* ── Top Bar ── */}
@@ -52,19 +76,27 @@ const AboutMe = () => {
                         <GlassWidget className="rounded-2xl overflow-hidden p-6 relative">
                             <div className="flex flex-col items-center text-center">
                                 <div className="relative mb-6">
-                                    <div className="w-32 h-32 rounded-full border-2 border-[#3c83f6]/50 p-1 relative z-10">
+                                    <div className="w-32 h-32 rounded-full border-2 border-[#3c83f6]/50 p-1 relative z-10 flex items-center justify-center overflow-hidden">
                                         <img
+                                            src={sachinImage}
                                             alt="Sachin Yadav"
-                                            className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-500"
-                                            src="/myself.png"
+                                            className="w-full h-full object-cover rounded-full"
                                         />
                                     </div>
-                                    <div className="absolute -inset-2 bg-[#3c83f6]/10 rounded-full blur-xl animate-pulse" />
+                                    <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full" />
                                 </div>
-                                <h1 className="text-2xl font-black text-white mb-1 tracking-tight">SACHIN YADAV</h1>
-                                <p className="text-[#3c83f6] text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                                    AI &amp; NLP ARCHITECT
+
+                                <h1 className="text-2xl font-black text-white mb-1 tracking-tight">
+                                    SACHIN YADAV
+                                </h1>
+
+                                <p
+                                    className="text-[#3c83f6] text-xs font-bold uppercase tracking-[0.2em] mb-6"
+                                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                                >
+                                    AI & NLP ARCHITECT
                                 </p>
+
                                 <div className="flex flex-col w-full gap-2 text-left bg-black/40 p-4 rounded-xl border border-white/5 text-[11px]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                                     <div className="flex justify-between">
                                         <span className="text-slate-500 uppercase">Location:</span>
@@ -119,11 +151,12 @@ const AboutMe = () => {
                             {/* Skill Bars */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                                 {[
-                                    { name: 'Java', pct: 95 },
-                                    { name: 'Natural Language Processing', pct: 90 },
-                                    { name: 'Spring boot ', pct: 85 },
-                                    { name: 'Agentic AI', pct: 88 },
-                                    { name: 'Large Language Models', pct: 92 },
+                                    { name: 'Java', pct: 70 },
+                                    { name: 'Natural Language Processing', pct: 60 },
+                                    { name: 'Spring boot ', pct: 55 },
+                                    { name: 'Agentic AI', pct: 30 },
+                                    { name: 'SQL', pct: 40 },
+                                    { name: 'Python', pct: 50 },
                                 ].map(skill => (
                                     <div key={skill.name} className="space-y-3">
                                         <div className="flex justify-between items-end">
@@ -144,7 +177,7 @@ const AboutMe = () => {
                             <div className="mt-12">
                                 <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-6 border-l-2 border-[#3c83f6] pl-3">Ecosystem_Matrix</h3>
                                 <div className="flex flex-wrap gap-3">
-                                    {['Python', 'Spring boot', 'Java', 'Longchain', 'OpenAI API', 'Docker', 'SQL'].map(tech => (
+                                    {['Python', 'Spring boot', 'Java', 'LangChain', 'OpenAI API', 'Docker', 'SQL'].map(tech => (
                                         <div key={tech} className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs flex items-center gap-2 hover:bg-[#3c83f6]/10 hover:border-[#3c83f6]/50 transition-all cursor-default group" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#3c83f6] group-hover:animate-ping" /> {tech}
                                         </div>
@@ -183,11 +216,11 @@ const AboutMe = () => {
                             </div>
                             <div className="space-y-3">
                                 {[
-                                    { icon: 'public', label: 'Portfolio' },
-                                    { icon: 'share', label: 'LinkedIn' },
-                                    { icon: 'terminal', label: 'GitHub' },
+                                    { icon: 'public', label: 'Portfolio', url: 'https://yadavsachin.vercel.app/' },
+                                    { icon: 'share', label: 'LinkedIn', url: 'https://www.linkedin.com/in/sachin-yadav-007814270/' },
+                                    { icon: 'terminal', label: 'GitHub', url: 'https://github.com/brutalsachin/nlp-studio' },
                                 ].map(link => (
-                                    <a key={link.label} className="flex items-center justify-between p-3 rounded-lg bg-black/40 border border-white/5 hover:border-[#3c83f6]/50 hover:bg-[#3c83f6]/5 transition-all group" href="#">
+                                    <a key={link.label} className="flex items-center justify-between p-3 rounded-lg bg-black/40 border border-white/5 hover:border-[#3c83f6]/50 hover:bg-[#3c83f6]/5 transition-all group" href={link.url} target="_blank" rel="noopener noreferrer">
                                         <div className="flex items-center gap-3">
                                             <span className="material-symbols-outlined text-[#3c83f6] text-lg">{link.icon}</span>
                                             <span className="text-xs uppercase tracking-tighter" style={{ fontFamily: "'JetBrains Mono', monospace" }}>{link.label}</span>
@@ -197,8 +230,6 @@ const AboutMe = () => {
                                 ))}
                             </div>
                         </GlassWidget>
-
-
                     </div>
                 </div>
 
@@ -219,9 +250,9 @@ const AboutMe = () => {
                             Download_CV.exe
                         </button>
                         <div className="flex items-center gap-3 px-4 border-l border-white/10">
-                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="#"><span className="material-symbols-outlined text-lg">public</span></a>
-                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="#"><span className="material-symbols-outlined text-lg">alternate_email</span></a>
-                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="#"><span className="material-symbols-outlined text-lg">terminal</span></a>
+                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="https://yadavsachin.vercel.app/" target="_blank" rel="noopener noreferrer"><span className="material-symbols-outlined text-lg">public</span></a>
+                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="https://www.linkedin.com/in/sachin-yadav-007814270/" target="_blank" rel="noopener noreferrer"><span className="material-symbols-outlined text-lg">share</span></a>
+                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="https://github.com/brutalsachin/nlp-studio" target="_blank" rel="noopener noreferrer"><span className="material-symbols-outlined text-lg">terminal</span></a>
                         </div>
                     </div>
                 </footer>

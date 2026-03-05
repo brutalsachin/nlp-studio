@@ -445,10 +445,10 @@ const NlpPipelineVisual = () => {
                         You've reached the end of the pipeline. Ready to dive into the code?
                     </p>
                     <div className="flex justify-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
-                        <a className="hover:text-indigo-400 transition-colors" href="#">Docs</a>
-                        <a className="hover:text-indigo-400 transition-colors" href="#">GitHub</a>
-                        <a className="hover:text-indigo-400 transition-colors" href="#">API</a>
-                        <a className="hover:text-indigo-400 transition-colors" href="#">Discord</a>
+                        <a className="hover:text-indigo-400 transition-colors" href="https://www.linkedin.com/in/sachin-yadav-007814270/">LinkedIn</a>
+                        <a className="hover:text-indigo-400 transition-colors" href="https://github.com/brutalsachin/nlp-studio">GitHub</a>
+
+
                     </div>
                     <p className="text-[10px] text-slate-700 uppercase font-black">© 2026 NLP Lab - Educational Experience</p>
                 </div>
