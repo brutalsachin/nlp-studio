@@ -8,6 +8,7 @@ import Vectorization from './vectorization';
 import NlpPipelineVisual from './nlpPipelineVisual';
 import ModelSelection from './modelSelection';
 import Evaluation from './evaluation';
+import AboutNlp from './aboutNlp';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutMe />} />
+        <Route path="/about-nlp" element={<AboutNlp />} />
         <Route path="/upload" element={<UploadData />} />
         <Route path="/preprocessing" element={<Preprocessing />} />
         <Route path="/feature-extraction" element={<FeatureExtraction />} />

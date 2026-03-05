@@ -12,22 +12,13 @@ const About = () => {
                         <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
                         <h1 className="text-xl font-bold tracking-tight text-slate-100">NLP Lab</h1>
                     </div>
-                    <nav className="hidden md:flex items-center gap-8">
-                        <a className="text-sm font-medium text-slate-400 hover:text-blue-500 transition-colors cursor-pointer" onClick={() => navigate('/')}>Home</a>
-                        <a className="text-sm font-medium text-slate-400 hover:text-blue-500 transition-colors" href="#">Pipeline</a>
-                        <a className="text-sm font-medium text-blue-500 cursor-pointer">About</a>
+                    <nav className="hidden md:flex items-center gap-10">
+                        {[{ label: 'Home', path: '/' }, { label: 'Pipeline', path: '/pipeline-visual' }].map((item) => (
+                            <a key={item.label} className="text-slate-400 hover:text-blue-500 text-sm font-medium transition-colors cursor-pointer" onClick={() => navigate(item.path)}>{item.label}</a>
+                        ))}
+                        <a className="text-blue-500 text-sm font-medium cursor-pointer">About</a>
                     </nav>
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => navigate('/upload')}
-                            className="flex items-center justify-center rounded-lg h-10 px-6 bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-600/20 hover:bg-blue-600/90 transition-all"
-                        >
-                            Launch Experiment
-                        </button>
-                        <div className="bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-700">
-                            <span className="material-symbols-outlined text-slate-400">person</span>
-                        </div>
-                    </div>
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold cursor-pointer hover:shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all" onClick={() => navigate('/about')}>SY</div>
                 </div>
             </header>
 

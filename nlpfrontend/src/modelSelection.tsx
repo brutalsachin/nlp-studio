@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { trainModel, type ModelType, type TrainResponse } from './api/modelApi';
 
 const PIPELINE = [
     { label: 'Upload Dataset', icon: 'upload_file', done: true, active: false, path: '/upload' },
@@ -9,17 +10,69 @@ const PIPELINE = [
     { label: 'Model Selection', icon: 'model_training', done: false, active: true, path: '/model-selection' },
 ];
 
-type ModelType = 'naive_bayes' | 'logistic';
+const DEFAULT_METRICS = { accuracy: '—', f1: '—', precision: '—', recall: '—', precPct: 0, recPct: 0, f1Pct: 0 };
 
 const ModelSelection = () => {
     const navigate = useNavigate();
     const [model, setModel] = useState<ModelType>('naive_bayes');
-    const [alpha, setAlpha] = useState(1.0);
-    const [fitPrior, setFitPrior] = useState(true);
+    const [isTraining, setIsTraining] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [trainedMetrics, setTrainedMetrics] = useState<TrainResponse | null>(null);
 
-    const metrics = model === 'naive_bayes'
-        ? { accuracy: '87%', f1: '0.86', precision: '0.89', recall: '0.84', precPct: 89, recPct: 84, f1Pct: 86 }
-        : { accuracy: '91%', f1: '0.90', precision: '0.92', recall: '0.88', precPct: 92, recPct: 88, f1Pct: 90 };
+    // Derive display metrics — show real data if trained, otherwise show placeholder estimates
+    const metrics = trainedMetrics
+        ? {
+            accuracy: `${(trainedMetrics.accuracy * 100).toFixed(1)}%`,
+            f1: trainedMetrics.f1Score.toFixed(2),
+            precision: trainedMetrics.precision.toFixed(2),
+            recall: trainedMetrics.recall.toFixed(2),
+            precPct: Math.round(trainedMetrics.precision * 100),
+            recPct: Math.round(trainedMetrics.recall * 100),
+            f1Pct: Math.round(trainedMetrics.f1Score * 100),
+        }
+        : model === 'naive_bayes'
+            ? { accuracy: '~87%', f1: '~0.86', precision: '~0.89', recall: '~0.84', precPct: 89, recPct: 84, f1Pct: 86 }
+            : { accuracy: '~91%', f1: '~0.90', precision: '~0.92', recall: '~0.88', precPct: 92, recPct: 88, f1Pct: 90 };
+
+    const handleModelChange = (newModel: ModelType) => {
+        setModel(newModel);
+        setTrainedMetrics(null); // Reset trained metrics when switching models
+        setError(null);
+    };
+
+    const handleTrain = async () => {
+        setIsTraining(true);
+        setError(null);
+
+        try {
+            // Gather pipeline state from localStorage
+            const features = JSON.parse(localStorage.getItem('selectedFeatures') || '[]');
+            const ngramType = localStorage.getItem('ngramType') || 'UNIGRAM';
+            const vectorizationType = localStorage.getItem('vectorizationType') || 'TF_IDF';
+
+            const result = await trainModel({
+                modelType: model,
+                features,
+                labels: [], // Backend will use the uploaded dataset labels
+                ngramType,
+                vectorizationType,
+            });
+
+            setTrainedMetrics(result);
+
+            // Store training results for the evaluation page
+            localStorage.setItem('trainingMetrics', JSON.stringify(result));
+            localStorage.setItem('selectedModel', model);
+
+            // Navigate to evaluation with the metrics
+            navigate('/evaluation', { state: result });
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : 'Model training failed. Please try again.';
+            setError(msg);
+        } finally {
+            setIsTraining(false);
+        }
+    };
 
     return (
         <div className="bg-[#07091a] text-slate-100 min-h-screen font-sans flex flex-col">
@@ -56,8 +109,19 @@ const ModelSelection = () => {
             <main className="flex-1 px-6 lg:px-10 py-8 max-w-[1400px] mx-auto w-full space-y-8">
                 <div>
                     <h1 className="text-3xl font-black mb-2">Step 5: Model Selection</h1>
-                    <p className="text-slate-400 text-sm">Choose a classification algorithm and configure its hyperparameters for the text dataset.</p>
+                    <p className="text-slate-400 text-sm">Choose a classification algorithm for the text dataset.</p>
                 </div>
+
+                {/* Error Banner */}
+                {error && (
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 animate-in">
+                        <span className="material-symbols-outlined text-rose-400">error</span>
+                        <p className="text-sm flex-1">{error}</p>
+                        <button onClick={() => setError(null)} className="text-rose-400 hover:text-rose-300 transition-colors">
+                            <span className="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                )}
 
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
                     <div className="space-y-6">
@@ -68,7 +132,7 @@ const ModelSelection = () => {
                             ].map(m => {
                                 const active = model === m.id;
                                 return (
-                                    <div key={m.id} onClick={() => setModel(m.id)} className={`p-6 rounded-2xl cursor-pointer transition-all border relative overflow-hidden ${active ? 'border-blue-500 bg-blue-500/10 shadow-[0_0_15px_rgba(60,131,246,0.2)]' : 'border-slate-700 bg-slate-800/20 hover:bg-slate-800/50 opacity-80 hover:opacity-100'}`}>
+                                    <div key={m.id} onClick={() => handleModelChange(m.id)} className={`p-6 rounded-2xl cursor-pointer transition-all border relative overflow-hidden ${active ? 'border-blue-500 bg-blue-500/10 shadow-[0_0_15px_rgba(60,131,246,0.2)]' : 'border-slate-700 bg-slate-800/20 hover:bg-slate-800/50 opacity-80 hover:opacity-100'} ${isTraining ? 'pointer-events-none opacity-60' : ''}`}>
                                         {active && <div className="absolute top-4 right-4 text-blue-500"><span className="material-symbols-outlined">check_circle</span></div>}
                                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${active ? 'bg-blue-500/20 text-blue-500' : 'bg-slate-700/50 text-slate-400'}`}>
                                             <span className="material-symbols-outlined text-3xl">{m.icon}</span>
@@ -80,45 +144,17 @@ const ModelSelection = () => {
                             })}
                         </div>
 
-                        {/* Hyperparameters */}
-                        <div className="bg-slate-900/60 border border-slate-700 rounded-2xl p-8 space-y-8">
-                            <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined text-blue-500">tune</span>
-                                <h3 className="text-lg font-bold">Hyperparameters: {model === 'naive_bayes' ? 'MultinomialNB' : 'LogisticRegression'}</h3>
-                            </div>
-                            <div className="space-y-6">
-                                <div>
-                                    <div className="flex justify-between items-center mb-3">
-                                        <label className="text-sm font-medium text-slate-300">{model === 'naive_bayes' ? 'Alpha (Smoothing)' : 'C (Regularization strength)'}</label>
-                                        <span className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-lg text-xs font-bold">{alpha.toFixed(1)}</span>
-                                    </div>
-                                    <input className="w-full accent-blue-500 cursor-pointer" max={2} min={0} step={0.1} type="range" value={alpha} onChange={e => setAlpha(Number(e.target.value))} />
-                                    <div className="flex justify-between text-[10px] text-slate-500 font-medium mt-1">
-                                        <span>0.0 (No Smoothing)</span><span>1.0 (Laplace)</span><span>2.0</span>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="text-sm font-medium text-slate-300 block mb-3">Fit Prior</label>
-                                        <div className="flex gap-2">
-                                            {['True', 'False'].map(v => (
-                                                <button key={v} onClick={() => setFitPrior(v === 'True')} className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${(v === 'True') === fitPrior ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(60,131,246,0.4)]' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>{v}</button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="p-4 bg-blue-900/10 border border-blue-500/20 rounded-xl flex gap-3">
-                                        <span className="material-symbols-outlined text-blue-400 shrink-0 text-lg">tips_and_updates</span>
-                                        <p className="text-xs text-blue-300/80 leading-relaxed"><span className="text-blue-300 font-bold">Pro Tip:</span> Alpha ≈ 1.0 is safer for sparse text vectors to avoid zero-probability issues.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     {/* Right – Projected Metrics */}
                     <aside>
                         <div className="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 sticky top-24 space-y-6">
-                            <h3 className="font-bold">Projected Performance</h3>
+                            <div className="flex items-center justify-between">
+                                <h3 className="font-bold">{trainedMetrics ? 'Training Results' : 'Projected Performance'}</h3>
+                                {trainedMetrics && (
+                                    <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Live</span>
+                                )}
+                            </div>
                             <div className="grid grid-cols-2 gap-3">
                                 {[
                                     { label: 'Accuracy', val: metrics.accuracy, color: 'text-blue-400' },
@@ -144,7 +180,12 @@ const ModelSelection = () => {
                                     </div>
                                 ))}
                             </div>
-                            <p className="text-[10px] text-slate-500 italic leading-relaxed border-t border-slate-700 pt-3">Metrics are estimated based on selected vectorization and N-gram configurations. Actual values may vary during cross-validation.</p>
+                            <p className="text-[10px] text-slate-500 italic leading-relaxed border-t border-slate-700 pt-3">
+                                {trainedMetrics
+                                    ? 'These are real metrics from the trained model. Click "Proceed to Evaluation" to see the detailed report.'
+                                    : 'Metrics are estimated. Click "Proceed to Evaluation" to train the model and get actual results.'
+                                }
+                            </p>
                         </div>
                     </aside>
                 </div>
@@ -156,9 +197,28 @@ const ModelSelection = () => {
                         <span className="material-symbols-outlined text-lg">arrow_back</span>Back
                     </button>
                     <div className="flex items-center gap-3">
-                        <button className="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-400 border border-slate-700 hover:bg-slate-800 transition-colors">Save Draft</button>
-                        <button onClick={() => navigate('/evaluation')} className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2.5 rounded-xl text-sm font-semibold shadow-[0_0_18px_rgba(60,131,246,0.4)] flex items-center gap-2">
-                            Proceed to Evaluation<span className="material-symbols-outlined text-lg">arrow_forward</span>
+                        <button
+                            onClick={handleTrain}
+                            disabled={isTraining}
+                            className={`px-8 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all ${isTraining
+                                    ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                                    : 'bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_18px_rgba(60,131,246,0.4)]'
+                                }`}
+                        >
+                            {isTraining ? (
+                                <>
+                                    <svg className="animate-spin h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                    </svg>
+                                    Training Model...
+                                </>
+                            ) : (
+                                <>
+                                    Proceed to Evaluation
+                                    <span className="material-symbols-outlined text-lg">arrow_forward</span>
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>

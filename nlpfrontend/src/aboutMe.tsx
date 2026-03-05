@@ -56,7 +56,7 @@ const AboutMe = () => {
                                         <img
                                             alt="Sachin Yadav"
                                             className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-500"
-                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa_ZoYhGRYStykEcSQ5FM2QvcC19Pitc2e1tB5hekqTFT7K05u49NnemMAsfEPq2Z84XsPp1tiGwimMnmf0Yn4Z5l9wL0NsCSaW3V9RAgu28KuJ-tPg0ZM9OMnMaiLE-atgl5Rod_drGX_O0ycvBiuW74YLIpV5AMq8WzKRlnS6xM2pGxabCbtWbKYylfj6LorFlmFjbT-pMbj9_eILUYd-noAoKYZttrKsx2njrS2VAqDyPMVpSIDuT0Nng7dsrO4ZeDl2h1MGAM"
+                                            src="/myself.png"
                                         />
                                     </div>
                                     <div className="absolute -inset-2 bg-[#3c83f6]/10 rounded-full blur-xl animate-pulse" />
@@ -72,7 +72,7 @@ const AboutMe = () => {
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-slate-500 uppercase">Email:</span>
-                                        <span className="text-slate-300">contact@sachin.dev</span>
+                                        <span className="text-slate-300">2k23.csai2310567@gmail.com</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-slate-500 uppercase">Access:</span>
@@ -119,9 +119,10 @@ const AboutMe = () => {
                             {/* Skill Bars */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                                 {[
-                                    { name: 'Natural Language Processing', pct: 95 },
-                                    { name: 'Machine Learning', pct: 90 },
-                                    { name: 'Deep Learning', pct: 88 },
+                                    { name: 'Java', pct: 95 },
+                                    { name: 'Natural Language Processing', pct: 90 },
+                                    { name: 'Spring boot ', pct: 85 },
+                                    { name: 'Agentic AI', pct: 88 },
                                     { name: 'Large Language Models', pct: 92 },
                                 ].map(skill => (
                                     <div key={skill.name} className="space-y-3">
@@ -143,7 +144,7 @@ const AboutMe = () => {
                             <div className="mt-12">
                                 <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-6 border-l-2 border-[#3c83f6] pl-3">Ecosystem_Matrix</h3>
                                 <div className="flex flex-wrap gap-3">
-                                    {['Python', 'PyTorch', 'TensorFlow', 'HuggingFace', 'OpenAI API', 'Docker', 'SQL'].map(tech => (
+                                    {['Python', 'Spring boot', 'Java', 'Longchain', 'OpenAI API', 'Docker', 'SQL'].map(tech => (
                                         <div key={tech} className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs flex items-center gap-2 hover:bg-[#3c83f6]/10 hover:border-[#3c83f6]/50 transition-all cursor-default group" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#3c83f6] group-hover:animate-ping" /> {tech}
                                         </div>
@@ -197,33 +198,7 @@ const AboutMe = () => {
                             </div>
                         </GlassWidget>
 
-                        {/* System Health */}
-                        <GlassWidget className="rounded-2xl p-6" style={{ borderTop: '2px solid rgba(60,131,246,0.3)' }}>
-                            <div className="flex items-center gap-2 mb-4">
-                                <span className="material-symbols-outlined text-[#3c83f6] text-sm">monitoring</span>
-                                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-200">System_Health</h3>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-lg bg-[#3c83f6]/10 flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-[#3c83f6] text-sm">database</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] text-slate-500 uppercase">Tokens Processed</p>
-                                        <p className="text-xs text-white" style={{ fontFamily: "'JetBrains Mono', monospace" }}>4.2B+</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-lg bg-[#3c83f6]/10 flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-[#3c83f6] text-sm">speed</span>
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] text-slate-500 uppercase">Avg Latency</p>
-                                        <p className="text-xs text-white" style={{ fontFamily: "'JetBrains Mono', monospace" }}>142ms</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </GlassWidget>
+
                     </div>
                 </div>
 
