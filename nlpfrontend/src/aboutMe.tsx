@@ -31,9 +31,8 @@ const AboutMe = () => {
                         <button onClick={() => navigate('/upload')} className="flex items-center justify-center rounded-lg h-10 px-6 bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-600/20 hover:bg-blue-600/90 transition-all">
                             Launch Experiment
                         </button>
-                        <div className="bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-700 cursor-pointer hover:border-blue-500/50 transition-colors" onClick={() => navigate('/about')}>
-                            <span className="material-symbols-outlined text-slate-400">person</span>
-                        </div>
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold cursor-pointer hover:shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all" onClick={() => navigate('/about')}>SY</div>
+
                     </div>
                 </div>
             </header>
@@ -64,7 +63,7 @@ const AboutMe = () => {
                     <div className="hidden md:flex items-center gap-6 uppercase tracking-widest text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px' }}>
                         <span>Uptime: 99.9%</span>
                         <span>Status: <span className="text-green-500">Online</span></span>
-                        <span className="text-slate-200">2024.V2.PRO</span>
+                        <span className="text-slate-200">2026.V1.0</span>
                     </div>
                 </div>
 
@@ -243,16 +242,13 @@ const AboutMe = () => {
                     }}
                 >
                     <div className="flex items-center gap-2 text-[10px] text-slate-500 uppercase italic" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                        <span className="material-symbols-outlined text-xs">copyright</span> 2024 SACHIN_YADAV.CORE // ALL_RIGHTS_RESERVED
+                        <span className="material-symbols-outlined text-xs">copyright</span> 2026 SACHIN_YADAV.CORE // ALL_RIGHTS_RESERVED
                     </div>
                     <div className="flex gap-4">
                         <button className="bg-[#3c83f6] px-6 py-2 rounded-lg text-white text-[10px] font-black uppercase tracking-widest hover:shadow-[0_0_15px_rgba(60,131,246,0.6)] transition-all">
                             Download_CV.exe
                         </button>
                         <div className="flex items-center gap-3 px-4 border-l border-white/10">
-                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="https://yadavsachin.vercel.app/" target="_blank" rel="noopener noreferrer"><span className="material-symbols-outlined text-lg">public</span></a>
-                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="https://www.linkedin.com/in/sachin-yadav-007814270/" target="_blank" rel="noopener noreferrer"><span className="material-symbols-outlined text-lg">share</span></a>
-                            <a className="text-slate-500 hover:text-[#3c83f6] transition-colors" href="https://github.com/brutalsachin/nlp-studio" target="_blank" rel="noopener noreferrer"><span className="material-symbols-outlined text-lg">terminal</span></a>
                         </div>
                     </div>
                 </footer>

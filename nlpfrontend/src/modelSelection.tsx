@@ -44,84 +44,65 @@ const ModelSelection = () => {
         setError(null);
 
         try {
-            // 1. Gather pipeline state from localStorage
             const selectedFeatures: string[] = JSON.parse(localStorage.getItem('selectedFeatures') || '[]');
             const ngramType = (localStorage.getItem('ngramType') as NgramType) || 'UNIGRAM';
             const vectorizationType = (localStorage.getItem('vectorizationType') as VectorizationType) || 'TF_IDF';
-            const uploadedDatasetAvailable = localStorage.getItem('uploadedDatasetAvailable') === 'true';
             let texts: string[] = JSON.parse(localStorage.getItem('trainingTexts') || '[]');
             let labels: string[] = JSON.parse(localStorage.getItem('trainingLabels') || '[]');
 
-            // 2. Validation and Alignment
             if (selectedFeatures.length === 0) {
                 throw new Error('Missing selected features. Please complete Feature Extraction and Vectorization first.');
             }
-            if (!uploadedDatasetAvailable) {
-                if (texts.length === 0 || labels.length === 0) {
-                    throw new Error('Missing training data. Please upload/select dataset again.');
-                }
-                if (texts.length !== labels.length) {
-                    const minLen = Math.min(texts.length, labels.length);
-                    console.warn(`Data length mismatch: texts(${texts.length}) vs labels(${labels.length}). Aligning to ${minLen}.`);
-                    texts = texts.slice(0, minLen);
-                    labels = labels.slice(0, minLen);
-                }
-                if (new Set(labels).size < 2) {
-                    throw new Error('Training requires at least 2 distinct labels. Please upload/select a balanced dataset.');
-                }
+            if (texts.length === 0 || labels.length === 0) {
+                throw new Error('Missing training data. Please upload/select dataset again.');
+            }
+            if (texts.length !== labels.length) {
+                const minLen = Math.min(texts.length, labels.length);
+                console.warn(`Data length mismatch: texts(${texts.length}) vs labels(${labels.length}). Aligning to ${minLen}.`);
+                texts = texts.slice(0, minLen);
+                labels = labels.slice(0, minLen);
+            }
+            if (new Set(labels).size < 2) {
+                throw new Error('Training requires at least 2 distinct labels. Please upload/select a balanced dataset.');
             }
 
-            // 3. Build feature matrix on frontend for sample datasets.
-            // For uploaded CSVs, backend trains directly from the uploaded dataset.
-            let features: number[][] = [];
-            if (!uploadedDatasetAvailable) {
-                features = await Promise.all(
-                    texts.map(async (text) => {
-                        const vectorized = await previewVectorization({
-                            text,
-                            ngramType,
-                            vectorizationType,
-                            selectedFeatures,
-                        });
-                        return vectorized.vector.map((value) => Number(value) || 0);
-                    })
-                );
-                localStorage.setItem('trainingFeatures', JSON.stringify(features));
-            }
+            const features: number[][] = await Promise.all(
+                texts.map(async (text) => {
+                    const vectorized = await previewVectorization({
+                        text,
+                        ngramType,
+                        vectorizationType,
+                        selectedFeatures,
+                    });
+                    return vectorized.vector.map((value) => Number(value) || 0);
+                })
+            );
+            localStorage.setItem('trainingFeatures', JSON.stringify(features));
 
-            // 4. Debug Logging
-            console.log("🚀 Training Payload Shape:", {
+            console.log('Training Payload Shape:', {
                 modelType: model,
-                rowCount: uploadedDatasetAvailable ? 'backend-uploaded-dataset' : features.length,
+                rowCount: features.length,
                 featureVectorSize: features[0]?.length || 0,
-                labelCount: uploadedDatasetAvailable ? 'backend-uploaded-dataset' : labels.length,
-                useUploadedDataset: uploadedDatasetAvailable,
+                labelCount: labels.length,
                 ngramType,
-                vectorizationType
+                vectorizationType,
             });
 
-            // 5. API Call
-            const payloadLabels = uploadedDatasetAvailable ? [] : labels;
             const result = await trainModel({
                 modelType: model,
                 features,
-                labels: payloadLabels,
+                labels,
                 selectedFeatures,
                 ngramType,
                 vectorizationType,
-                // Additional settings if available
                 lowercase: true,
                 removeStopwords: true,
-                removePunctuation: true
+                removePunctuation: true,
             });
 
             setTrainedMetrics(result);
-
-            // Store training results for the evaluation page
             localStorage.setItem('trainingMetrics', JSON.stringify(result));
             localStorage.setItem('selectedModel', model);
-
-            // Navigate to evaluation with the metrics
             navigate('/evaluation', { state: result });
         } catch (err) {
             const msg = err instanceof Error ? err.message : 'Model training failed. Please try again.';
@@ -130,7 +111,6 @@ const ModelSelection = () => {
             setIsTraining(false);
         }
     };
-
     return (
         <div className="bg-[#07091a] text-slate-100 min-h-screen font-sans flex flex-col">
             <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0d1f]/90 backdrop-blur-md px-6 lg:px-10 py-3.5">
@@ -285,3 +265,4 @@ const ModelSelection = () => {
 };
 
 export default ModelSelection;
+

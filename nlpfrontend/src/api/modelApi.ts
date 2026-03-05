@@ -25,6 +25,7 @@ export interface TrainResponse {
     precision: number;
     recall: number;
     f1Score: number;
+    labels?: string[];
     confusionMatrix?: number[][];
     classificationReport?: {
         className: string;
@@ -33,6 +34,7 @@ export interface TrainResponse {
         f1Score: number;
         support: number;
     }[];
+    totalSamples?: number;
 }
 
 /**

@@ -55,9 +55,8 @@ const Home = () => {
                         <button onClick={() => navigate('/upload')} className="flex items-center justify-center rounded-lg h-10 px-6 bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-600/20 hover:bg-blue-600/90 transition-all">
                             Launch Experiment
                         </button>
-                        <div className="bg-slate-800 rounded-full w-10 h-10 flex items-center justify-center border border-slate-700 cursor-pointer hover:border-blue-500/50 transition-colors" onClick={() => navigate('/about')}>
-                            <span className="material-symbols-outlined text-slate-400">person</span>
-                        </div>
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold cursor-pointer hover:shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all" onClick={() => navigate('/about')}>SY</div>
+
                     </div>
                 </div>
             </header>

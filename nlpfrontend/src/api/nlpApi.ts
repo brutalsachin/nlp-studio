@@ -77,3 +77,19 @@ export async function uploadDataset(file: File): Promise<DatasetUploadResponse> 
 
     return response.json() as Promise<DatasetUploadResponse>;
 }
+
+export async function fetchSampleDataset(sampleId: "movie" | "twitter"): Promise<DatasetUploadResponse> {
+    const response = await fetch(`${BASE_URL}/api/dataset/sample/${sampleId}`, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+        },
+    });
+
+    if (!response.ok) {
+        const message = await response.text().catch(() => "Unknown server error");
+        throw new Error(`Sample load failed (${response.status}): ${message}`);
+    }
+
+    return response.json() as Promise<DatasetUploadResponse>;
+}
