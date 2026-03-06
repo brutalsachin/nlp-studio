@@ -2,7 +2,7 @@
 // NLP Lab — Vectorization API Client
 // ─────────────────────────────────────────────────────────────────────────────
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://nlp-studio-egoj.onrender.com";
 
 export type NgramType = "UNIGRAM" | "BIGRAM" | "TRIGRAM";
 export type VectorizationType = "TF_IDF" | "BAG_OF_WORDS" | "ONE_HOT";
