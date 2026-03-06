@@ -107,26 +107,6 @@ The application follows a clean **client-server architecture**: a React + TypeSc
 ```
 nlp-studio/
 │
-├── 📁 nlpfrontend/                        # React + TypeScript + Vite frontend
-│   ├── public/
-│   └── src/
-│       ├── api/                           # Axios/fetch API call logic
-│       ├── assets/                        # Static assets (images, icons)
-│       ├── App.tsx                        # Root app component & routing
-│       ├── App.css                        # Global app styles
-│       ├── main.tsx                       # Vite entry point
-│       ├── index.css                      # Base CSS reset/styles
-│       ├── Home.tsx                       # Landing/home page
-│       ├── UploadData.tsx                 # Dataset upload & parsing
-│       ├── preprocessing.tsx              # Text preprocessing stage
-│       ├── featureExtraction.tsx          # Feature extraction stage
-│       ├── vectorization.tsx              # Vectorization stage
-│       ├── modelSelection.tsx             # Model selection & training
-│       ├── evaluation.tsx                 # Model evaluation dashboard
-│       ├── nlpPipelineVisual.tsx          # Full pipeline visualizer
-│       ├── aboutNlp.tsx                   # NLP concepts explainer
-│       └── aboutMe.tsx                    # Author/about page
-│
 ├── 📁 nlpBackend/                         # Spring Boot backend
 │   ├── src/
 │   │   ├── main/
@@ -346,11 +326,7 @@ docker run -d -p 8080:8080 --name nlp-studio nlp-studio
 
 ---
 
-## 📄 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
-
----
 
 <div align="center">
 
