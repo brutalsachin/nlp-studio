@@ -4,9 +4,7 @@
 
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const BASE_URL = import.meta.env.PROD
-    ? envBaseUrl && !envBaseUrl.includes("localhost")
-        ? envBaseUrl
-        : "https://nlp-studio-egoj.onrender.com"
+    ? "https://nlp-studio-egoj.onrender.com"
     : envBaseUrl ?? "http://localhost:8080";
 
 export interface FeatureExtractionRequest {
