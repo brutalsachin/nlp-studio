@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 import sachinImage from "./assets/sachin_image.jpeg";
 const AboutMe = () => {
     const navigate = useNavigate();
 
     return (
         <div className="bg-[#0a0c10] text-slate-300 min-h-screen overflow-x-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
-            {/* Dot pattern background */}
+            
             <div
                 className="fixed inset-0 z-[-1] opacity-20 pointer-events-none"
                 style={{
@@ -14,7 +14,7 @@ const AboutMe = () => {
                 }}
             />
 
-            {/* Top Navigation */}
+            
             <header className="sticky top-0 z-50 w-full border-b border-slate-200/10 bg-[#0a0c10]/80 backdrop-blur-md px-6 md:px-20 py-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 text-blue-500 cursor-pointer group" onClick={() => navigate('/')}>
@@ -38,7 +38,7 @@ const AboutMe = () => {
             </header>
 
             <main className="min-h-screen p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto">
-                {/* ── Top Bar ── */}
+                
                 <div className="flex items-center justify-between mb-8 rounded-xl px-6 py-3 border-l-4 border-l-[#3c83f6]"
                     style={{
                         background: 'rgba(22, 27, 34, 0.7)',
@@ -57,7 +57,7 @@ const AboutMe = () => {
                         <div className="h-4 w-[1px] bg-slate-700 mx-2" />
                         <div className="flex items-center gap-2" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', letterSpacing: '0.05em' }}>
                             <span className="text-[#3c83f6] font-bold">SYSTEM_USER:</span>
-                            <span className="text-slate-400">SACHIN_YADAV // KANPUR_NODE_IN</span>
+                            <span className="text-slate-400">SACHIN_YADAV
                         </div>
                     </div>
                     <div className="hidden md:flex items-center gap-6 uppercase tracking-widest text-slate-500" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '10px' }}>
@@ -67,11 +67,11 @@ const AboutMe = () => {
                     </div>
                 </div>
 
-                {/* ── Grid Layout ── */}
+                
                 <div className="grid grid-cols-12 gap-6">
-                    {/* ── LEFT COLUMN ── */}
+                    
                     <div className="col-span-12 lg:col-span-3 space-y-6">
-                        {/* Profile Card */}
+                        
                         <GlassWidget className="rounded-2xl overflow-hidden p-6 relative">
                             <div className="flex flex-col items-center text-center">
                                 <div className="relative mb-6">
@@ -113,7 +113,7 @@ const AboutMe = () => {
                             </div>
                         </GlassWidget>
 
-                        {/* Contact Form */}
+                        
                         <GlassWidget className="rounded-2xl p-6">
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="material-symbols-outlined text-[#3c83f6] text-sm">terminal</span>
@@ -131,7 +131,7 @@ const AboutMe = () => {
                         </GlassWidget>
                     </div>
 
-                    {/* ── CENTER COLUMN ── */}
+                    
                     <div className="col-span-12 lg:col-span-6 space-y-6">
                         <GlassWidget className="rounded-3xl p-8 h-full relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10">
@@ -147,7 +147,7 @@ const AboutMe = () => {
                                 </div>
                             </div>
 
-                            {/* Skill Bars */}
+                            
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                                 {[
                                     { name: 'Java', pct: 70 },
@@ -172,7 +172,7 @@ const AboutMe = () => {
                                 ))}
                             </div>
 
-                            {/* Tech Ecosystem */}
+                            
                             <div className="mt-12">
                                 <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-6 border-l-2 border-[#3c83f6] pl-3">Ecosystem_Matrix</h3>
                                 <div className="flex flex-wrap gap-3">
@@ -187,9 +187,9 @@ const AboutMe = () => {
                         </GlassWidget>
                     </div>
 
-                    {/* ── RIGHT COLUMN ── */}
+                    
                     <div className="col-span-12 lg:col-span-3 space-y-6">
-                        {/* Brief */}
+                        
                         <GlassWidget className="rounded-2xl p-6 relative overflow-hidden">
                             <div className="absolute -right-2 -top-2 text-[#3c83f6]/5 select-none font-black text-6xl">01</div>
                             <div className="flex items-center gap-2 mb-4">
@@ -206,7 +206,7 @@ const AboutMe = () => {
                             </div>
                         </GlassWidget>
 
-                        {/* External Links */}
+                        
                         <GlassWidget className="rounded-2xl p-6 relative overflow-hidden">
                             <div className="absolute -right-2 -top-2 text-[#3c83f6]/5 select-none font-black text-6xl">02</div>
                             <div className="flex items-center gap-2 mb-6">
@@ -215,9 +215,9 @@ const AboutMe = () => {
                             </div>
                             <div className="space-y-3">
                                 {[
-                                    { icon: 'public', label: 'Portfolio', url: 'https://yadavsachin.vercel.app/' },
-                                    { icon: 'share', label: 'LinkedIn', url: 'https://www.linkedin.com/in/sachin-yadav-007814270/' },
-                                    { icon: 'terminal', label: 'GitHub', url: 'https://github.com/brutalsachin/nlp-studio' },
+                                    { icon: 'public', label: 'Portfolio', url: 'https:
+                                    { icon: 'share', label: 'LinkedIn', url: 'https:
+                                    { icon: 'terminal', label: 'GitHub', url: 'https:
                                 ].map(link => (
                                     <a key={link.label} className="flex items-center justify-between p-3 rounded-lg bg-black/40 border border-white/5 hover:border-[#3c83f6]/50 hover:bg-[#3c83f6]/5 transition-all group" href={link.url} target="_blank" rel="noopener noreferrer">
                                         <div className="flex items-center gap-3">
@@ -232,7 +232,7 @@ const AboutMe = () => {
                     </div>
                 </div>
 
-                {/* ── Footer ── */}
+                
                 <footer className="mt-12 mb-4 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4"
                     style={{
                         background: 'rgba(22, 27, 34, 0.7)',
@@ -242,7 +242,7 @@ const AboutMe = () => {
                     }}
                 >
                     <div className="flex items-center gap-2 text-[10px] text-slate-500 uppercase italic" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                        <span className="material-symbols-outlined text-xs">copyright</span> 2026 SACHIN_YADAV.CORE // ALL_RIGHTS_RESERVED
+                        <span className="material-symbols-outlined text-xs">copyright</span> 2026 SACHIN_YADAV.CORE
                     </div>
                     <div className="flex gap-4">
                         <button className="bg-[#3c83f6] px-6 py-2 rounded-lg text-white text-[10px] font-black uppercase tracking-widest hover:shadow-[0_0_15px_rgba(60,131,246,0.6)] transition-all">
@@ -257,7 +257,6 @@ const AboutMe = () => {
     );
 };
 
-/* ── Reusable glass-widget wrapper ── */
 const GlassWidget = ({ children, className = '', style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) => (
     <div
         className={className}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { previewVectorization } from './api/vectorizationApi';
 import { previewFeatureExtraction } from './api/featureExtractionApi';
@@ -13,7 +13,6 @@ import {
     Cell,
 } from 'recharts';
 
-// ── Pipeline steps ────────────────────────────────────────────────────────────
 const PIPELINE = [
     { label: 'Upload Dataset', icon: 'upload_file', done: true, active: false, path: '/upload' },
     { label: 'Preprocessing', icon: 'settings_suggest', done: true, active: false, path: '/preprocessing' },
@@ -22,7 +21,6 @@ const PIPELINE = [
     { label: 'Model Selection', icon: 'model_training', done: false, active: false, path: '/model-selection' },
 ];
 
-// ── Strategy cards ────────────────────────────────────────────────────────────
 const strategies: {
     id: VectorizationType;
     icon: string;
@@ -57,7 +55,6 @@ const strategies: {
         },
     ];
 
-// ── Custom tooltip for Recharts ───────────────────────────────────────────────
 const ChartTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.[0]) return null;
     const d = payload[0].payload;
@@ -69,11 +66,9 @@ const ChartTooltip = ({ active, payload }: any) => {
     );
 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
 const Vectorization = () => {
     const navigate = useNavigate();
 
-    // ── State ─────────────────────────────────────────────────────────────────
     const [inputText, setInputText] = useState<string>(
         () => localStorage.getItem('preprocessedText') ?? ''
     );
@@ -85,12 +80,10 @@ const Vectorization = () => {
     );
     const [vectorType, setVectorType] = useState<VectorizationType>('TF_IDF');
 
-    // ── API state ─────────────────────────────────────────────────────────────
     const [vectorResult, setVectorResult] = useState<VectorizationResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // ── Debounced two-step API call ───────────────────────────────────────────
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
@@ -101,7 +94,7 @@ const Vectorization = () => {
             setLoading(true);
             setError(null);
             try {
-                // 1. Re-extract features from the current text
+
                 const fe = await previewFeatureExtraction({
                     text: inputText,
                     ngramType: selectedNgramType,
@@ -118,7 +111,6 @@ const Vectorization = () => {
                     return;
                 }
 
-                // 2. Vectorize with fresh features
                 const data = await previewVectorization({
                     text: inputText,
                     ngramType: selectedNgramType,
@@ -139,7 +131,6 @@ const Vectorization = () => {
         };
     }, [inputText, vectorType, selectedNgramType]);
 
-    // ── Derived data ──────────────────────────────────────────────────────────
     const activeStrategy = strategies.find((s) => s.id === vectorType)!;
 
     const featureValuePairs = vectorResult
@@ -149,7 +140,6 @@ const Vectorization = () => {
         }))
         : [];
 
-    // top features sorted descending (meaningful for TF-IDF)
     const topFeatures = [...featureValuePairs]
         .filter((f) => f.value > 0)
         .sort((a, b) => b.value - a.value)
@@ -161,16 +151,14 @@ const Vectorization = () => {
     const vectorSize = vectorResult?.vector.length ?? 0;
     const vocabSize = selectedFeatures.length;
 
-    // Gradient bar colours for chart
     const BAR_COLORS = [
         '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#c084fc',
         '#818cf8', '#60a5fa', '#38bdf8', '#22d3ee', '#2dd4bf',
     ];
 
-    // ── Render ────────────────────────────────────────────────────────────────
     return (
         <div className="bg-[#07091a] text-slate-100 min-h-screen font-sans flex flex-col">
-            {/* ────────── Header ────────── */}
+            
             <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0d1f]/90 backdrop-blur-md px-6 lg:px-10 py-3.5">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
@@ -187,7 +175,7 @@ const Vectorization = () => {
                 </div>
             </header>
 
-            {/* ────────── Pipeline breadcrumbs ────────── */}
+            
             <div className="border-b border-slate-800/70 bg-[#0a0d1f] px-6 lg:px-10">
                 <div className="max-w-[1440px] mx-auto flex">
                     {PIPELINE.map((step, idx) => (
@@ -230,9 +218,9 @@ const Vectorization = () => {
                 </div>
             </div>
 
-            {/* ────────── Main Content ────────── */}
+            
             <main className="flex-1 px-6 lg:px-10 py-8 max-w-[1440px] mx-auto w-full">
-                {/* Title */}
+                
                 <div className="mb-8">
                     <h1 className="text-3xl font-black mb-2">
                         Vectorization{' '}
@@ -247,11 +235,11 @@ const Vectorization = () => {
                     </p>
                 </div>
 
-                {/* ────── 3-column grid ────── */}
+                
                 <div className="grid grid-cols-1 xl:grid-cols-[1fr_340px] gap-8">
-                    {/* ──── LEFT: Controls + Previews ──── */}
+                    
                     <div className="space-y-8">
-                        {/* ── Text Input ── */}
+                        
                         <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-4">
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500">
@@ -271,7 +259,7 @@ const Vectorization = () => {
                             />
                         </section>
 
-                        {/* ── Vectorization Method Cards ── */}
+                        
                         <section className="space-y-4">
                             <div className="flex items-center gap-2 mb-1">
                                 <span className="material-symbols-outlined text-blue-500">
@@ -297,7 +285,7 @@ const Vectorization = () => {
                                                 }
                                             `}
                                         >
-                                            {/* Glow on active */}
+                                            
                                             {active && (
                                                 <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
                                             )}
@@ -338,7 +326,7 @@ const Vectorization = () => {
                             </div>
                         </section>
 
-                        {/* ── Vector Preview ── */}
+                        
                         <section className="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden">
                             <div className="bg-white/[.03] px-6 py-4 border-b border-slate-800 flex items-center justify-between">
                                 <h3 className="font-bold flex items-center gap-2 text-sm">
@@ -350,7 +338,7 @@ const Vectorization = () => {
                                 {loading ? (
                                     <svg
                                         className="animate-spin h-4 w-4 text-blue-400"
-                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns="http:
                                         fill="none"
                                         viewBox="0 0 24 24"
                                     >
@@ -385,7 +373,7 @@ const Vectorization = () => {
                                     </div>
                                 )}
 
-                                {/* Raw vector */}
+                                
                                 <div className="bg-[#020617] rounded-xl p-5 font-mono text-sm border border-slate-800 max-h-40 overflow-y-auto">
                                     <div className="flex flex-wrap gap-1.5 items-center text-blue-400">
                                         <span className="text-slate-500 text-lg">[</span>
@@ -424,7 +412,7 @@ const Vectorization = () => {
                                     </div>
                                 </div>
 
-                                {/* Feature → Value mapping table */}
+                                
                                 {!loading &&
                                     featureValuePairs.length > 0 && (
                                         <div>
@@ -441,7 +429,7 @@ const Vectorization = () => {
                                                             {f.name}
                                                         </span>
                                                         <div className="flex items-center gap-3">
-                                                            {/* Tiny inline bar */}
+                                                            
                                                             <div className="w-20 h-1.5 rounded-full bg-slate-800 overflow-hidden hidden sm:block">
                                                                 <div
                                                                     className="h-full rounded-full bg-blue-500 transition-all duration-500"
@@ -475,7 +463,7 @@ const Vectorization = () => {
                             </div>
                         </section>
 
-                        {/* ── Top TF-IDF Features Chart ── */}
+                        
                         {!loading && topFeatures.length > 0 && (
                             <section className="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden">
                                 <div className="bg-white/[.03] px-6 py-4 border-b border-slate-800">
@@ -528,9 +516,9 @@ const Vectorization = () => {
                         )}
                     </div>
 
-                    {/* ──── RIGHT: Metrics + Vocabulary ──── */}
+                    
                     <aside className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto space-y-6 scrollbar-thin">
-                        {/* ── Metrics Panel ── */}
+                        
                         <div className="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-5">
                             <h3 className="font-bold flex items-center gap-2 text-sm">
                                 <span className="material-symbols-outlined text-blue-500">
@@ -586,7 +574,7 @@ const Vectorization = () => {
                                 </div>
                             ))}
 
-                            {/* Numeric stats */}
+                            
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="bg-slate-800/50 rounded-xl p-3.5 text-center border border-slate-700/50">
                                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">
@@ -606,7 +594,7 @@ const Vectorization = () => {
                                 </div>
                             </div>
 
-                            {/* Pro Tip */}
+                            
                             <div className="border-t border-slate-700 pt-4 flex gap-3">
                                 <span className="material-symbols-outlined text-amber-400 shrink-0">
                                     lightbulb
@@ -622,7 +610,7 @@ const Vectorization = () => {
                             </div>
                         </div>
 
-                        {/* ── Vocabulary Panel ── */}
+                        
                         {!loading && selectedFeatures.length > 0 && (
                             <div className="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-4">
                                 <h3 className="font-bold flex items-center gap-2 text-sm">
@@ -659,7 +647,7 @@ const Vectorization = () => {
                 </div>
             </main>
 
-            {/* ────────── Footer Nav ────────── */}
+            
             <footer className="sticky bottom-0 z-50 px-6 lg:px-10 py-4 bg-[#0a0d1f]/90 backdrop-blur-md border-t border-slate-800">
                 <div className="max-w-[1440px] mx-auto flex items-center justify-between">
                     <button

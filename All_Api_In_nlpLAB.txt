@@ -1,0 +1,91 @@
+ BASE URL :-  https://nlp-studio-egoj.onrender.com
+
+
+1 -> POST /api/analyze
+
+{ "text": "I love this movie" }
+
+
+
+
+2 -> POST /api/dataset/upload
+
+
+
+
+ 3 -> GET /api/dataset/sample/{sampleId}
+ {
+  "text": "sample text",
+  "ngramType": "UNIGRAM",
+  "maxFeatures": 5000,
+  "minDocumentFrequency": 1
+ }
+
+
+
+
+ 4 ->  POST /api/feature-extraction/preview
+   {
+  "text": "sample text",
+  "normalization": "STEMMING",
+  "removeStopwords": true,
+  "lowercase": true,
+  "removePunctuation": true,
+  "removeNumbers": true
+}
+
+
+
+
+
+  5 -> POST /api/model/train
+    "modelType": "naive_bayes",
+  "features": [[0.2, 0.8], [0.6, 0.4]],
+  "labels": ["positive", "negative"],
+  "alpha": 1.0,
+  "fitPrior": true,
+  "selectedFeatures": ["good", "bad"],
+  "ngramType": "UNIGRAM",
+  "vectorizationType": "TF_IDF",
+  "normalization": "NONE",
+  "removeStopwords": true,
+  "lowercase": true,
+  "removePunctuation": true,
+  "removeNumbers": true
+
+
+
+
+
+    6 -> POST /api/model/evaluate
+     {
+      "modelType": "naive_bayes",
+  "features": [[0.2, 0.8], [0.6, 0.4]],
+  "labels": ["positive", "negative"],
+  "alpha": 1.0,
+  "fitPrior": true,
+  "selectedFeatures": ["good", "bad"],
+  "ngramType": "UNIGRAM",
+  "vectorizationType": "TF_IDF",
+  "normalization": "NONE",
+  "removeStopwords": true,
+  "lowercase": true,
+  "removePunctuation": true,
+  "removeNumbers": true
+   }
+
+
+
+
+   7 ->POST /api/model/predict
+    { "text": "This was amazing" }
+
+
+
+POST /api/preprocessing/preview
+
+POST /api/vectorization/preview
+
+GET /api/v1/landing-page
+
+POST /api/v1/analyze/sentiment

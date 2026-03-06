@@ -1,11 +1,9 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// NLP Lab — Preprocessing API Client
-// ─────────────────────────────────────────────────────────────────────────────
+﻿
 
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const BASE_URL = import.meta.env.PROD
-    ? "https://nlp-studio-egoj.onrender.com"
-    : envBaseUrl ?? "http://localhost:8080";
+    ? "https:
+    : envBaseUrl ?? "http:
 
 export interface PreprocessingRequest {
     text: string;
@@ -23,10 +21,6 @@ export interface PreprocessingResponse {
     appliedSteps: string[];
 }
 
-/**
- * Sends a preprocessing configuration to the backend and returns the preview.
- * @throws {Error} if the request fails or the server returns a non-OK status.
- */
 export async function previewPreprocessing(
     request: PreprocessingRequest
 ): Promise<PreprocessingResponse> {

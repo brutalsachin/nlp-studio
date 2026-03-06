@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { previewFeatureExtraction } from './api/featureExtractionApi';
 import type { FeatureExtractionResponse } from './api/featureExtractionApi';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 type NgramType = 'UNIGRAM' | 'BIGRAM' | 'TRIGRAM';
 
-// ── Constants ─────────────────────────────────────────────────────────────────
 const DEFAULT_TEXT = 'just hate movie waste time totally go hate if but';
 
 const PIPELINE = [
@@ -24,25 +22,21 @@ const NGRAM_LABELS: Record<NgramType, { title: string; range: string; desc: stri
     TRIGRAM: { title: 'Trigram', range: 'N=3', desc: 'Word triplets — captures longer context.' },
 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
 const FeatureExtraction = () => {
     const navigate = useNavigate();
 
-    // ── Config state ─────────────────────────────────────────────────────────
     const [text, setText] = useState<string>(
-        // Seed from preprocessed output if available, otherwise use default sample
+
         localStorage.getItem('preprocessedText') ?? DEFAULT_TEXT
     );
     const [ngram, setNgram] = useState<NgramType>('UNIGRAM');
     const [maxFeatures, setMaxFeatures] = useState(5000);
     const [minDf, setMinDf] = useState(1);
 
-    // ── API state ─────────────────────────────────────────────────────────────
     const [result, setResult] = useState<FeatureExtractionResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // ── Debounced API call (400 ms) ───────────────────────────────────────────
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
@@ -61,7 +55,6 @@ const FeatureExtraction = () => {
                 });
                 setResult(data);
 
-                // ── Persist configurations for Vectorization page ──
                 localStorage.setItem('selectedFeatures', JSON.stringify(data.selectedFeatures));
                 localStorage.setItem('ngramType', data.ngramType);
             } catch (err: unknown) {
@@ -79,7 +72,7 @@ const FeatureExtraction = () => {
     return (
         <div className="bg-[#07091a] text-slate-100 min-h-screen font-sans flex flex-col">
 
-            {/* ── Header ── */}
+            
             <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0d1f]/90 backdrop-blur-md px-6 lg:px-10 py-3.5">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
@@ -96,7 +89,7 @@ const FeatureExtraction = () => {
                 </div>
             </header>
 
-            {/* ── Pipeline Progress ── */}
+            
             <div className="border-b border-slate-800/70 bg-[#0a0d1f] px-6 lg:px-10">
                 <div className="max-w-[1400px] mx-auto flex">
                     {PIPELINE.map((step, idx) => (
@@ -115,7 +108,7 @@ const FeatureExtraction = () => {
                 </div>
             </div>
 
-            {/* ── Main ── */}
+            
             <main className="flex-1 px-6 lg:px-10 py-8 max-w-[1400px] mx-auto w-full">
                 <div className="mb-8">
                     <h1 className="text-3xl font-black mb-2">Step 3: Feature Extraction</h1>
@@ -124,10 +117,10 @@ const FeatureExtraction = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
 
-                    {/* ── Left: Controls ── */}
+                    
                     <div className="space-y-8">
 
-                        {/* Input Text */}
+                        
                         <section className="space-y-3">
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500">text_fields</span>
@@ -143,7 +136,7 @@ const FeatureExtraction = () => {
                             />
                         </section>
 
-                        {/* N-gram Configuration */}
+                        
                         <section className="space-y-5">
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500">filter_list</span>
@@ -171,13 +164,13 @@ const FeatureExtraction = () => {
                             </div>
                         </section>
 
-                        {/* Feature Parameters */}
+                        
                         <section className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl space-y-6">
                             <h3 className="text-lg font-semibold flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500">tune</span>Feature Parameters
                             </h3>
                             <div className="space-y-6">
-                                {/* Max Features */}
+                                
                                 <div>
                                     <div className="flex justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-300">Max Features</label>
@@ -191,7 +184,7 @@ const FeatureExtraction = () => {
                                     />
                                     <div className="flex justify-between text-[10px] text-slate-600 mt-1"><span>500</span><span>10,000</span><span>20,000</span></div>
                                 </div>
-                                {/* Min Document Frequency */}
+                                
                                 <div>
                                     <div className="flex justify-between mb-2">
                                         <label className="text-sm font-medium text-slate-300">Min Document Frequency</label>
@@ -209,16 +202,16 @@ const FeatureExtraction = () => {
                         </section>
                     </div>
 
-                    {/* ── Right: Live Preview Panel ── */}
+                    
                     <div className="rounded-2xl border border-slate-800 overflow-hidden flex flex-col sticky top-24 bg-slate-900/30">
-                        {/* Panel header */}
+                        
                         <div className="bg-slate-800/40 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
                             <h3 className="font-bold flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500 text-xl">token</span>
                                 Extracted Tokens
                             </h3>
                             {loading ? (
-                                <svg className="animate-spin h-4 w-4 text-blue-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-4 w-4 text-blue-400 shrink-0" xmlns="http:
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                                 </svg>
@@ -229,7 +222,7 @@ const FeatureExtraction = () => {
 
                         <div className="p-6 space-y-5 flex-1">
 
-                            {/* Error */}
+                            
                             {error && (
                                 <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
                                     <span className="material-symbols-outlined text-sm shrink-0 mt-0.5">error</span>
@@ -237,7 +230,7 @@ const FeatureExtraction = () => {
                                 </div>
                             )}
 
-                            {/* N-gram type badge */}
+                            
                             <div className="flex items-center gap-2">
                                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">N-gram Type</span>
                                 <span className="px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-400 text-xs font-black border border-blue-500/25">
@@ -245,7 +238,7 @@ const FeatureExtraction = () => {
                                 </span>
                             </div>
 
-                            {/* Selected features / token chips */}
+                            
                             <div>
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Selected Features</label>
                                 {loading ? (
@@ -267,7 +260,7 @@ const FeatureExtraction = () => {
                                 ) : null}
                             </div>
 
-                            {/* Stats grid */}
+                            
                             <div className="grid grid-cols-2 gap-3 pt-2">
                                 <div className="bg-slate-800/50 rounded-lg p-3 text-center border border-slate-700">
                                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Vocabulary Size</p>
@@ -283,7 +276,7 @@ const FeatureExtraction = () => {
                                 </div>
                             </div>
 
-                            {/* Secondary stats */}
+                            
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="bg-slate-800/50 rounded-lg p-3 text-center border border-slate-700">
                                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Max Features</p>
@@ -295,7 +288,7 @@ const FeatureExtraction = () => {
                                 </div>
                             </div>
 
-                            {/* Pro tip */}
+                            
                             {result && !loading && (
                                 <div className="bg-blue-900/10 border border-blue-500/20 p-4 rounded-xl flex gap-3">
                                     <span className="material-symbols-outlined text-blue-400 shrink-0 text-lg">tips_and_updates</span>
@@ -314,7 +307,7 @@ const FeatureExtraction = () => {
                 </div>
             </main>
 
-            {/* ── Footer Nav ── */}
+            
             <footer className="sticky bottom-0 z-50 px-6 lg:px-10 py-4 bg-[#0a0d1f]/90 backdrop-blur-md border-t border-slate-800">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     <button onClick={() => navigate('/preprocessing')} className="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-400 border border-slate-700 hover:bg-slate-800 transition-colors flex items-center gap-2">

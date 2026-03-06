@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+﻿import { useNavigate } from 'react-router-dom';
 
 const About = () => {
     const navigate = useNavigate();
 
     return (
         <div className="bg-[#0F172A] text-slate-100 min-h-screen font-sans flex flex-col">
-            {/* Header */}
+            
             <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-[#0F172A]/80 backdrop-blur-md px-6 lg:px-20 py-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
@@ -24,7 +24,7 @@ const About = () => {
 
             <main className="flex-1 w-full max-w-7xl mx-auto px-6 lg:px-20 py-12 space-y-24">
 
-                {/* Vision Section */}
+                
                 <section className="relative pt-8">
                     <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
                     <div className="max-w-3xl">
@@ -38,14 +38,14 @@ const About = () => {
                     </div>
                 </section>
 
-                {/* System Architecture Section */}
+                
                 <section className="space-y-12">
                     <div className="text-center max-w-2xl mx-auto">
                         <h2 className="text-3xl font-bold mb-4 text-slate-100">System Architecture</h2>
                         <p className="text-slate-400">Built on modular principles using Strategy and Factory design patterns for seamless runtime interchangeability of pipeline components.</p>
                     </div>
                     <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                        {/* Architecture Map */}
+                        
                         <div className="space-y-4">
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border-l-4 border border-slate-700 border-l-blue-500 shadow-[0_0_20px_-5px_rgba(60,131,246,0.2)]">
@@ -80,7 +80,7 @@ const About = () => {
                             </div>
                         </div>
 
-                        {/* Architecture Details */}
+                        
                         <div className="flex flex-col justify-center h-full space-y-6">
                             <div className="space-y-4">
                                 <h3 className="text-xl font-bold flex items-center gap-2 text-slate-100">
@@ -98,7 +98,7 @@ const About = () => {
                     </div>
                 </section>
 
-                {/* Technology Stack Section */}
+                
                 <section className="space-y-12">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold mb-4 text-slate-100">Core Technology Stack</h2>
@@ -127,7 +127,7 @@ const About = () => {
                     </div>
                 </section>
 
-                {/* Educational Purpose Section */}
+                
                 <section className="pb-20">
                     <div className="rounded-3xl bg-slate-900/50 p-8 md:p-12 border border-slate-800 flex flex-col md:flex-row gap-12 items-center">
                         <div className="md:w-1/2 space-y-6">
@@ -162,7 +162,7 @@ const About = () => {
                 </section>
             </main>
 
-            {/* Footer */}
+            
             <footer className="w-full border-t border-slate-800 py-12 px-6 lg:px-20 bg-[#020617]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>

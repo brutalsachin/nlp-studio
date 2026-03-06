@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { analyzeText, type AnalyzeResponse } from './api/nlpApi';
 
@@ -26,7 +26,7 @@ const NlpPipelineVisual = () => {
 
     return (
         <div className="bg-[#020617] text-slate-100 min-h-screen selection:bg-indigo-500/30" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            {/* ── Fixed Header ── */}
+            
             <header className="fixed top-0 left-0 w-full h-20 z-50 flex items-center justify-between px-8 bg-[#020617]/80 backdrop-blur-xl border-b border-slate-800/50">
                 <div className="flex items-center gap-2 text-indigo-500 cursor-pointer" onClick={() => navigate('/')}>
                     <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
@@ -49,14 +49,14 @@ const NlpPipelineVisual = () => {
                 </button>
             </header>
 
-            {/* ── Right-side progress dots ── */}
+            
             <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
                 {['intro', 'step1', 'step2', 'step3', 'step4', 'step5', 'step6'].map((id) => (
                     <a key={id} href={`#${id}`} className="w-2 h-2 rounded-full bg-slate-700 hover:bg-indigo-500 transition-all duration-300" />
                 ))}
             </div>
 
-            {/* ═══════════════════════ INTRO ═══════════════════════ */}
+            
             <section id="intro" className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden">
                 <div className="max-w-4xl text-center space-y-8">
                     <div className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em]">
@@ -76,7 +76,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-            {/* ═══════════════════════ STEP 1: RAW INPUT ═══════════════════════ */}
+            
             <section
                 id="step1"
                 className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden border-t border-slate-900"
@@ -115,7 +115,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-            {/* ═══════════════════════ STEP 2: CLEANING ═══════════════════════ */}
+            
             <section id="step2" className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden bg-[#0f172a]">
                 <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <div className="lg:order-2 space-y-6">
@@ -150,7 +150,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-            {/* ═══════════════════════ STEP 3: PATTERNS ═══════════════════════ */}
+            
             <section
                 id="step3"
                 className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden"
@@ -197,7 +197,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-            {/* ═══════════════════════ STEP 4: VECTORIZATION ═══════════════════════ */}
+            
             <section id="step4" className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden bg-[#0f172a]">
                 <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                     <div className="space-y-6">
@@ -226,7 +226,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-            {/* ═══════════════════════ STEP 5: MODEL TRAINING ═══════════════════════ */}
+            
             <section
                 id="step5"
                 className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden"
@@ -272,7 +272,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-            {/* ═══════════════════════ STEP 6: RESULT ═══════════════════════ */}
+            
             <section id="step6" className="min-h-screen w-full flex flex-col justify-center items-center px-6 py-24 relative overflow-hidden bg-[#020617]">
                 <div className="max-w-4xl w-full text-center space-y-12">
                     <div className="space-y-4">
@@ -323,7 +323,7 @@ const NlpPipelineVisual = () => {
                         </button>
                     </div>
 
-                    {/* ─── TRY IT NOW PANEL ─── */}
+                    
                     {showTryIt && (
                         <div className="w-full text-left space-y-6 animate-[fadeSlideIn_0.4s_ease-out]">
                             <div>
@@ -331,7 +331,7 @@ const NlpPipelineVisual = () => {
                                 <p className="text-slate-400 mt-2">See the pipeline in action with real-time analysis</p>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {/* INPUT SIDE */}
+                                
                                 <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-8 space-y-6">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400">Input Text</p>
                                     <textarea
@@ -359,7 +359,7 @@ const NlpPipelineVisual = () => {
                                     </button>
                                 </div>
 
-                                {/* OUTPUT SIDE */}
+                                
                                 <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-8">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-6">Output Analysis</p>
                                     {error && (
@@ -433,8 +433,7 @@ const NlpPipelineVisual = () => {
                 </div>
             </section>
 
-
-            {/* ── Footer ── */}
+            
             <footer className="py-20 border-t border-slate-900 text-center">
                 <div className="max-w-4xl mx-auto px-6 space-y-8">
                     <div className="flex items-center justify-center gap-2 text-indigo-500/50 cursor-pointer" onClick={() => navigate('/')}>
@@ -445,16 +444,15 @@ const NlpPipelineVisual = () => {
                         You've reached the end of the pipeline. Ready to dive into the code?
                     </p>
                     <div className="flex justify-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-600">
-                        <a className="hover:text-indigo-400 transition-colors" href="https://www.linkedin.com/in/sachin-yadav-007814270/">LinkedIn</a>
-                        <a className="hover:text-indigo-400 transition-colors" href="https://github.com/brutalsachin/nlp-studio">GitHub</a>
-
+                        <a className="hover:text-indigo-400 transition-colors" href="https:
+                        <a className="hover:text-indigo-400 transition-colors" href="https:
 
                     </div>
                     <p className="text-[10px] text-slate-700 uppercase font-black">© 2026 NLP Lab - Educational Experience</p>
                 </div>
             </footer>
 
-            {/* Float animation keyframes */}
+            
             <style>{`
                 @keyframes float {
                     0% { transform: translateY(0px); }

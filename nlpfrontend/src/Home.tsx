@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { analyzeText } from './api/nlpApi';
 import type { AnalyzeResponse } from './api/nlpApi';
@@ -166,7 +166,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Try It Now Section */}
+            { }
             <section className="px-6 md:px-20 py-32 bg-slate-900/40">
                 <div className="max-w-4xl mx-auto">
                     <div className="mb-16">

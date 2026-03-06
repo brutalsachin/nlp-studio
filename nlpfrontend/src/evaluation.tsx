@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+﻿import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { TrainResponse } from './api/modelApi';
 

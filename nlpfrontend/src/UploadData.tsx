@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { uploadDataset } from './api/nlpApi';
 import type { DatasetUploadResponse } from './api/nlpApi';
@@ -20,13 +20,13 @@ const sampleDatasets: SampleDataset[] = [
 const SAMPLE_DATASET_URLS: Record<SampleId, { urls: string[]; filename: string }> = {
     movie: {
         urls: [
-            'https://raw.githubusercontent.com/clairett/pytorch-sentiment-classification/master/data/SST2/train.tsv',
+            'https:
         ],
         filename: 'movie-sentiment.csv',
     },
     twitter: {
         urls: [
-            'https://raw.githubusercontent.com/justmarkham/pycon-2016-tutorial/master/data/sms.tsv',
+            'https:
         ],
         filename: 'sms-sentiment.csv',
     },
@@ -80,7 +80,7 @@ const normalizeSampleToTwoColumnCsv = (sampleId: SampleId, raw: string): string 
             continue;
         }
         const secondComma = line.indexOf(',', firstComma + 1);
-        if (secondComma < 0) { // two-column csv
+        if (secondComma < 0) {
             const left = line.slice(0, firstComma).trim();
             const right = line.slice(firstComma + 1).trim();
             if (!left || !right) {
@@ -213,14 +213,14 @@ const UploadData = () => {
 
     useEffect(() => {
         void loadSample('movie');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, []);
 
     useEffect(() => {
         if (datasetInfo && textCol && labelCol) {
             persistTrainingData(datasetInfo, textCol, labelCol);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [textCol, labelCol]);
 
     const processFile = async (file: File) => {

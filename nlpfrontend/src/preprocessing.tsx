@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { previewPreprocessing } from './api/preprocessingApi';
 import type { PreprocessingResponse } from './api/preprocessingApi';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 type NormMethod = 'STEMMING' | 'LEMMATIZATION' | 'NONE';
 
-// ── Constants ─────────────────────────────────────────────────────────────────
 const DEFAULT_TEXT = 'I absolutely loved the running scenes in the movie!';
 
 const PIPELINE = [
@@ -17,11 +15,9 @@ const PIPELINE = [
     { label: 'Model Selection', icon: 'model_training', done: false, active: false, path: '/model-selection' },
 ];
 
-// ── Component ─────────────────────────────────────────────────────────────────
 const Preprocessing = () => {
     const navigate = useNavigate();
 
-    // ── Config state ─────────────────────────────────────────────────────────
     const [inputText, setInputText] = useState<string>(DEFAULT_TEXT);
     const [norm, setNorm] = useState<NormMethod>('STEMMING');
     const [stopwords, setStopwords] = useState(true);
@@ -29,12 +25,10 @@ const Preprocessing = () => {
     const [punct, setPunct] = useState(true);
     const [numbers, setNumbers] = useState(false);
 
-    // ── API state ─────────────────────────────────────────────────────────────
     const [previewResult, setPreviewResult] = useState<PreprocessingResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // ── Debounced API call ────────────────────────────────────────────────────
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
@@ -54,7 +48,7 @@ const Preprocessing = () => {
                     removeNumbers: numbers,
                 });
                 setPreviewResult(result);
-                // ── Persist processed text for Feature Extraction page ──
+
                 localStorage.setItem('preprocessedText', result.processedText);
             } catch (err: unknown) {
                 setError(err instanceof Error ? err.message : 'Preview failed. Please try again.');
@@ -68,7 +62,6 @@ const Preprocessing = () => {
         };
     }, [inputText, norm, stopwords, lowercase, punct, numbers]);
 
-    // ── Derived display values ────────────────────────────────────────────────
     const originalTokenCount = previewResult
         ? previewResult.originalText.split(/\s+/).filter(Boolean).length
         : inputText.split(/\s+/).filter(Boolean).length;
@@ -79,7 +72,6 @@ const Preprocessing = () => {
         ? Math.round((1 - processedTokenCount / originalTokenCount) * 100)
         : 0;
 
-    // ── Card / toggle data ────────────────────────────────────────────────────
     const normCards = [
         { id: 'STEMMING' as NormMethod, icon: 'content_cut', title: 'Stemming', desc: 'Reduces words to their root by chopping off endings.', example: 'running → run' },
         { id: 'LEMMATIZATION' as NormMethod, icon: 'psychology', title: 'Lemmatization', desc: 'Uses vocabulary analysis to return the base form.', example: 'better → good' },
@@ -95,7 +87,7 @@ const Preprocessing = () => {
 
     return (
         <div className="bg-[#07091a] text-slate-100 min-h-screen font-sans flex flex-col">
-            {/* Header */}
+            
             <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0a0d1f]/90 backdrop-blur-md px-6 lg:px-10 py-3.5">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
@@ -112,7 +104,7 @@ const Preprocessing = () => {
                 </div>
             </header>
 
-            {/* Pipeline Progress */}
+            
             <div className="border-b border-slate-800/70 bg-[#0a0d1f] px-6 lg:px-10">
                 <div className="max-w-[1400px] mx-auto flex">
                     {PIPELINE.map((step, idx) => (
@@ -127,7 +119,7 @@ const Preprocessing = () => {
                 </div>
             </div>
 
-            {/* Main */}
+            
             <main className="flex-1 px-6 lg:px-10 py-8 max-w-[1400px] mx-auto w-full">
                 <div className="mb-8">
                     <h1 className="text-3xl font-black mb-2">Step 2: Configure Text Preprocessing</h1>
@@ -135,10 +127,10 @@ const Preprocessing = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
-                    {/* ── Left: Controls ── */}
+                    
                     <div className="space-y-8">
 
-                        {/* Input Text */}
+                        
                         <section className="space-y-3">
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500">text_fields</span>
@@ -154,7 +146,7 @@ const Preprocessing = () => {
                             />
                         </section>
 
-                        {/* Normalization Method */}
+                        
                         <section className="space-y-5">
                             <div className="flex items-center gap-2">
                                 <span className="material-symbols-outlined text-blue-500">width_normal</span>
@@ -181,7 +173,7 @@ const Preprocessing = () => {
                             </div>
                         </section>
 
-                        {/* Toggle Switches */}
+                        
                         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {toggles.map(t => (
                                 <div key={t.label} className="flex items-center justify-between p-4 rounded-xl border border-white/10 transition-all hover:border-white/20" style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)' }}>
@@ -197,7 +189,7 @@ const Preprocessing = () => {
                         </section>
                     </div>
 
-                    {/* ── Right: Live Preview ── */}
+                    
                     <div className="rounded-xl border border-white/10 overflow-hidden flex flex-col sticky top-24" style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)' }}>
                         <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between">
                             <h3 className="font-bold flex items-center gap-2">
@@ -205,7 +197,7 @@ const Preprocessing = () => {
                                 Live Transformation Preview
                             </h3>
                             {loading ? (
-                                <svg className="animate-spin h-4 w-4 text-blue-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-4 w-4 text-blue-400 shrink-0" xmlns="http:
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                                 </svg>
@@ -215,7 +207,7 @@ const Preprocessing = () => {
                         </div>
 
                         <div className="p-6 space-y-5 flex-1">
-                            {/* Error banner */}
+                            
                             {error && (
                                 <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
                                     <span className="material-symbols-outlined text-sm shrink-0 mt-0.5">error</span>
@@ -223,7 +215,7 @@ const Preprocessing = () => {
                                 </div>
                             )}
 
-                            {/* Original Text */}
+                            
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Original Text</label>
                                 <div className="bg-slate-900/60 rounded-xl p-4 border border-white/5 text-sm italic leading-relaxed text-slate-400">
@@ -231,14 +223,14 @@ const Preprocessing = () => {
                                 </div>
                             </div>
 
-                            {/* Arrow */}
+                            
                             <div className="flex justify-center">
                                 <div className="bg-blue-500/20 p-2 rounded-full border border-blue-500/30">
                                     <span className="material-symbols-outlined text-blue-500">expand_more</span>
                                 </div>
                             </div>
 
-                            {/* Processed Text */}
+                            
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-blue-500 uppercase tracking-wider">After Preprocessing</label>
                                 <div className="bg-blue-500/5 rounded-xl p-4 border border-blue-500/20 text-sm font-mono leading-relaxed text-slate-100 min-h-[80px] transition-all">
@@ -252,7 +244,7 @@ const Preprocessing = () => {
                                 </div>
                             </div>
 
-                            {/* Tokens */}
+                            
                             {previewResult && previewResult.tokens.length > 0 && !loading && (
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tokens</label>
@@ -266,7 +258,7 @@ const Preprocessing = () => {
                                 </div>
                             )}
 
-                            {/* Applied Steps */}
+                            
                             {previewResult && previewResult.appliedSteps.length > 0 && !loading && (
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Applied Steps</label>
@@ -280,7 +272,7 @@ const Preprocessing = () => {
                                 </div>
                             )}
 
-                            {/* Stats */}
+                            
                             <div className="grid grid-cols-2 gap-3 pt-2">
                                 <div className="bg-slate-800/50 rounded-lg p-3 text-center border border-slate-700">
                                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Original Tokens</p>
@@ -294,7 +286,7 @@ const Preprocessing = () => {
                                 </div>
                             </div>
 
-                            {/* Preprocessing Impact tip */}
+                            
                             <div className="bg-blue-900/10 border border-blue-500/20 p-4 rounded-xl flex gap-3">
                                 <span className="material-symbols-outlined text-blue-400 shrink-0 text-lg">tips_and_updates</span>
                                 <div>
@@ -313,7 +305,7 @@ const Preprocessing = () => {
                 </div>
             </main>
 
-            {/* Footer Nav */}
+            
             <footer className="sticky bottom-0 z-50 px-6 lg:px-10 py-4 bg-[#0a0d1f]/90 backdrop-blur-md border-t border-slate-800">
                 <div className="max-w-[1400px] mx-auto flex items-center justify-between">
                     <button onClick={() => navigate('/upload')} className="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-400 border border-slate-700 hover:bg-slate-800 transition-colors flex items-center gap-2">

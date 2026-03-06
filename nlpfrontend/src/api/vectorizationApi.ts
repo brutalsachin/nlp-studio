@@ -1,11 +1,9 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// NLP Lab — Vectorization API Client
-// ─────────────────────────────────────────────────────────────────────────────
+﻿
 
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const BASE_URL = import.meta.env.PROD
-    ? "https://nlp-studio-egoj.onrender.com"
-    : envBaseUrl ?? "http://localhost:8080";
+    ? "https:
+    : envBaseUrl ?? "http:
 
 export type NgramType = "UNIGRAM" | "BIGRAM" | "TRIGRAM";
 export type VectorizationType = "TF_IDF" | "BAG_OF_WORDS" | "ONE_HOT";
@@ -26,10 +24,6 @@ export interface VectorizationResponse {
     vocabCoverage: number;
 }
 
-/**
- * Sends a vectorization configuration to the backend and returns the vector representation.
- * @throws {Error} if the request fails or the server returns a non-OK status.
- */
 export async function previewVectorization(
     request: VectorizationRequest
 ): Promise<VectorizationResponse> {

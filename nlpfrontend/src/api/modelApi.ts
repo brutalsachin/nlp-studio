@@ -1,18 +1,16 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// NLP Lab — Model Training API Client
-// ─────────────────────────────────────────────────────────────────────────────
+﻿
 
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const BASE_URL = import.meta.env.PROD
-    ? "https://nlp-studio-egoj.onrender.com"
-    : envBaseUrl ?? "http://localhost:8080";
+    ? "https:
+    : envBaseUrl ?? "http:
 
 export type ModelType = "NAIVE_BAYES" | "LOGISTIC_REGRESSION";
 
 export interface TrainRequest {
     modelType: ModelType;
-    features: number[][]; // Full feature matrix
-    labels: string[];     // Labels for each row in the matrix
+    features: number[][];
+    labels: string[];
     selectedFeatures?: string[];
     ngramType?: string;
     vectorizationType?: string;
@@ -40,10 +38,6 @@ export interface TrainResponse {
     totalSamples?: number;
 }
 
-/**
- * Sends a model training request to the backend.
- * @throws {Error} if the request fails or the server returns a non-OK status.
- */
 export async function trainModel(request: TrainRequest): Promise<TrainResponse> {
     const response = await fetch(`${BASE_URL}/api/model/train`, {
         method: "POST",

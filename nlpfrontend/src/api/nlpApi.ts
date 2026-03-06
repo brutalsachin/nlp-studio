@@ -1,7 +1,4 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// NLP Lab — API Client
-// Handles communication with the Spring Boot backend at VITE_API_BASE_URL
-// ─────────────────────────────────────────────────────────────────────────────
+﻿
 
 export interface AnalyzeRequest {
     text: string;
@@ -22,13 +19,9 @@ export interface AnalyzeResponse {
 
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const BASE_URL = import.meta.env.PROD
-  ? "https://nlp-studio-egoj.onrender.com"
-  : envBaseUrl ?? "http://localhost:8080";
+  ? "https:
+  : envBaseUrl ?? "http:
 
-/**
- * Sends text to the NLP analysis endpoint and returns the structured response.
- * @throws {Error} if the HTTP request fails or the server returns a non-OK status
- */
 export async function analyzeText(payload: AnalyzeRequest): Promise<AnalyzeResponse> {
     const response = await fetch(`${BASE_URL}/api/analyze`, {
         method: "POST",
@@ -47,10 +40,6 @@ export async function analyzeText(payload: AnalyzeRequest): Promise<AnalyzeRespo
     return response.json() as Promise<AnalyzeResponse>;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Dataset Upload
-// ─────────────────────────────────────────────────────────────────────────────
-
 export interface DatasetUploadResponse {
     columns: string[];
     rowCount: number;
@@ -58,18 +47,13 @@ export interface DatasetUploadResponse {
     labelDistribution: Record<string, number>;
 }
 
-/**
- * Uploads a CSV file to the dataset endpoint using multipart/form-data.
- * NOTE: Do NOT set Content-Type manually — the browser adds the boundary.
- * @throws {Error} if the upload fails or the server returns a non-OK status
- */
 export async function uploadDataset(file: File): Promise<DatasetUploadResponse> {
     const formData = new FormData();
     formData.append("file", file);
 
     const response = await fetch(`${BASE_URL}/api/dataset/upload`, {
         method: "POST",
-        // No Content-Type header — browser sets it with the correct multipart boundary
+
         body: formData,
     });
 
