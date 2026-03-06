@@ -2,7 +2,7 @@
 // NLP Lab — Model Training API Client
 // ─────────────────────────────────────────────────────────────────────────────
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://nlp-studio-egoj.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "https://nlp-studio-ego1.onrender.com";
 
 export type ModelType = "NAIVE_BAYES" | "LOGISTIC_REGRESSION";
 
